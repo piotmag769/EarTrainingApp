@@ -329,9 +329,8 @@ class App:
             exercise_window,
             variable,
             *available_harmonics,
-
         )
-        dropdown.config(font=('Comic Sans MS', 12, 'bold'))
+        dropdown['menu'].config(font=('Comic Sans MS', 12, 'bold'))
         harmonics_label.place(x = 350, y = 20)
         dropdown.place(x = 350, y = 70)
 
