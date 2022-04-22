@@ -1,6 +1,6 @@
 import tkinter as tk
 
-
+# Frame TODO
 class mode_picker:
 
     def __init__(self):

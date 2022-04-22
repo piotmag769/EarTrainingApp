@@ -1,5 +1,7 @@
 import tkinter as tk
 from login_window import LoginWindow
+from exercise_windows import ExerciseWindow
+from enum_types import Instrument, Mode, Exercise
 
 
 # we can split different windows into different classes + modules or sth
@@ -7,9 +9,9 @@ class App:
     def __init__(self, root):
         self.root = root
 
-        self.current_mode = tk.IntVar()
-        self.current_instrument = tk.IntVar()
-        self.current_ex_type = tk.IntVar()
+        self.current_mode = Mode.EASY
+        self.current_instrument = Instrument.PIANO
+        self.current_exercise = Exercise.INTERVALS
 
         button_font = ('Comic Sans MS', 10, 'bold')
 
@@ -60,7 +62,7 @@ class App:
             width=15,
             text="EASY",
             font=button_font,
-            command=lambda: self.change_mode(0)
+            command=lambda: self.change_mode(Mode.EASY)
         )
 
         self.medium_button = tk.Button(
@@ -70,7 +72,7 @@ class App:
             width=15,
             text="MEDIUM",
             font=button_font,
-            command=lambda: self.change_mode(1)
+            command=lambda: self.change_mode(Mode.MEDIUM)
         )
 
         self.hard_button = tk.Button(
@@ -80,7 +82,7 @@ class App:
             width=15,
             text="HARD",
             font=button_font,
-            command=lambda: self.change_mode(2)
+            command=lambda: self.change_mode(Mode.HARD)
         )
 
         self.piano_button = tk.Button(
@@ -90,7 +92,7 @@ class App:
             width=15,
             text="Piano",
             font=button_font,
-            command=lambda: self.change_instrument(0)
+            command=lambda: self.change_instrument(Instrument.PIANO)
         )
 
         self.guitar_button = tk.Button(
@@ -100,7 +102,7 @@ class App:
             width=15,
             text="Guitar",
             font=button_font,
-            command=lambda: self.change_instrument(1)
+            command=lambda: self.change_instrument(Instrument.GUITAR)
         )
 
         self.trumpet_button = tk.Button(
@@ -110,7 +112,7 @@ class App:
             width=15,
             text="Trumpet",
             font=button_font,
-            command=lambda: self.change_instrument(2)
+            command=lambda: self.change_instrument(Instrument.TRUMPET)
         )
 
         self.intervals_button = tk.Button(
@@ -120,7 +122,7 @@ class App:
             width=15,
             text="Intervals",
             font=button_font,
-            command=lambda: self.change_ex_type(0)
+            command=lambda: self.change_ex_type(Exercise.INTERVALS)
         )
 
         self.triads_button = tk.Button(
@@ -130,7 +132,7 @@ class App:
             width=15,
             text="Triads",
             font=button_font,
-            command=lambda: self.change_ex_type(2)
+            command=lambda: self.change_ex_type(Exercise.TRIADS)
         )
 
         self.dom_seventh_button = tk.Button(
@@ -140,7 +142,7 @@ class App:
             width=15,
             text="Dominant 7th",
             font=button_font,
-            command=lambda: self.change_ex_type(1)
+            command=lambda: self.change_ex_type(Exercise.DOMINANT_7TH)
         )
 
         self.start_button = tk.Button(
@@ -192,43 +194,17 @@ class App:
         self.statistics_button.place(x=50, y=550)
         self.improve_button.place(x=670, y=550)
 
-    # 0 - easy, 1 - medium, 2 - hard
-    def change_mode(self, mode_number):
-        self.current_mode.set(mode_number)
-        prefix = "Current mode: "
+    def change_mode(self, mode: Mode):
+        self.current_mode = mode
+        self.mode_label['text'] = "Current mode: " + mode.name
 
-        text = "EASY"
-        if mode_number == 1:
-            text = "MEDIUM"
-        elif mode_number == 2:
-            text = "HARD"
+    def change_instrument(self, instrument: Instrument):
+        self.current_instrument = instrument
+        self.instrument_label['text'] = "Instrument picked: " + instrument.name
 
-        self.mode_label['text'] = prefix + text
-
-    def change_instrument(self, instrument_number):
-        self.current_instrument.set(instrument_number)
-        prefix = "Instrument picked: "
-
-        text = "PIANO"
-        if instrument_number == 1:
-            text = "GUITAR"
-        elif instrument_number == 2:
-            text = "TRUMPET"
-
-        self.instrument_label['text'] = prefix + text
-
-    def change_ex_type(self, ex_number):
-
-        self.current_ex_type.set(ex_number)
-        prefix = "Exercise picked: "
-
-        text = "INTERVALS"
-        if ex_number == 1:
-            text = "DOMINANT 7TH"
-        elif ex_number == 2:
-            text = "TRIADS"
-
-        self.ex_type_label['text'] = prefix + text
+    def change_ex_type(self, exercise: Exercise):
+        self.current_exercise = exercise
+        self.ex_type_label['text'] = "Exercise picked: " + "DOMINANT 7TH" if exercise == Exercise.DOMINANT_7TH else exercise.name
 
     def open_program_info_window(self):
         # TODO
@@ -244,6 +220,7 @@ class App:
         login_window.mainloop()
 
     def open_improvement_window(self):
+        # TODO
         improvement_window = tk.Toplevel(self.root)
         improvement_window.wm_resizable(False, False)
         improvement_window.title("Areas to improve")
@@ -251,6 +228,7 @@ class App:
         improvement_window.mainloop()
 
     def open_statistics_window(self):
+        # TODO
         statistics_window = tk.Toplevel(self.root)
         statistics_window.wm_resizable(False, False)
         statistics_window.title("Statistics")
@@ -258,104 +236,7 @@ class App:
         statistics_window.mainloop()
 
     def open_exercise_window(self):
-        exercise_window = tk.Toplevel(self.root)
-        exercise_window.wm_resizable(False, False)
-        exercise_window.title("Exercise")
-        exercise_window.geometry("850x700")
-
-        harmonics_label = tk.Label(
-            exercise_window,
-            text="Choose mode: ",
-            font=('Comic Sans MS', 18, 'bold italic'),
-        )
-
-        if self.current_instrument.get() == 0 or self.current_instrument.get() == 1:
-            available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół', 'harmonicznie',
-                                   'melodycznie w górę + harmonicznie', 'melodycznie w dół + harmonicznie']
-        else:
-            available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół']
-
-        variable = tk.StringVar()
-        variable.set(available_harmonics[0])
-
-        dropdown = tk.OptionMenu(
-            exercise_window,
-            variable,
-            *available_harmonics,
-        )
-
-        # TODO
-        dropdown['menu'].config(font=('Comic Sans MS', 12, 'bold'))
-
-        harmonics_label.place(x=350, y=20)
-        dropdown.place(x=350, y=70)
-
-        if self.current_ex_type.get() == 0:
-            what_to_play = [tk.BooleanVar() for _ in range(13)]
-            intervals_names = ['Pryma 1', 'Sekunda mała 2>', 'Sekundka wielka 2', 'Tercja mała 3>', 'Tercja wielka 3',
-                               'Kwarta czysta 4', 'Tryton 4</5>', 'Kwinta czysta 5', 'Seksta mała 6>',' Seksta wielka 6',
-                               'Septyma mała 7', 'Septyma wielka 7<', 'Oktawa']
-
-            check_buttons = [
-                tk.Checkbutton(exercise_window, text=intervals_names[i], variable=what_to_play[i], onvalue=True,
-                               offvalue=False, font=('Comic Sans MS', 15, 'bold')) for i in range(13)]
-
-            infix = "intervals "
-
-        elif self.current_ex_type.get() == 1:
-            what_to_play = [tk.BooleanVar() for _ in range(4)]
-            dominants_names = ['Zasadnicza', 'I przewrót', 'II przewrót', 'III przewrót']
-
-            check_buttons = [
-                tk.Checkbutton(exercise_window, text=dominants_names[i], variable=what_to_play[i], onvalue=True,
-                               offvalue=False, font=('Comic Sans MS', 15, 'bold')) for i in range(4)]
-
-            infix = "dominants "
-
-        else:
-            what_to_play = [tk.BooleanVar() for _ in range(10)]
-            triads_names = ['Durowy zasadniczy', 'Durowy sekstowy', 'Durowy kwartsekstowy', 'Molowy zasadniczy',
-                            'Molowy sekstowy', 'Molowy kwartsekstowy', 'Zmniejszony zasadniczy', 'Zmniejszony sekstowy',
-                            'Zmniejszony kwartsekstowy', 'Zwiększony kwartsekstowy']
-
-            check_buttons = [
-                tk.Checkbutton(exercise_window, text=triads_names[i], variable=what_to_play[i], onvalue=True,
-                               offvalue=False, font=('Comic Sans MS', 15, 'bold')) for i in range(10)]
-
-            infix = "triads "
-
-        # do it in all cases
-        instruction_label = tk.Label(
-            exercise_window,
-            text="Uncheck " + infix + "you don't want to train",
-            font=('Comic Sans MS', 18, 'bold italic'),
-        )
-
-        instruction_label.place(x=450, y=130, anchor="center")
-
-        for i in range(len(check_buttons)):
-            check_buttons[i].select()
-            check_buttons[i].place(x=350, y=160 + i * 35)
-
-##########################################
-
-        exercise_start_button = tk.Button(
-            exercise_window,
-            bg="red",
-            fg="white",
-            width=15,
-            text="START!",
-            font=('Comic Sans MS', 10, 'bold'),
-        )
-
-        exercise_start_button.place(x=350, y=630)
-
-        exercise_window.update_idletasks()  # Update "requested size" from geometry manager
-
-        x = (exercise_window.winfo_screenwidth() - 850) / 2
-        y = (exercise_window.winfo_screenheight() - 700) / 2
-        exercise_window.geometry("+%d+%d" % (x, y))
-
+        exercise_window = ExerciseWindow(self.root, self.current_instrument, self.current_exercise)
         exercise_window.mainloop()
 
 
@@ -372,6 +253,5 @@ if __name__ == "__main__":
     main()
 
 # language, password + user - password, user w csv ewentualnie chronione hasłem
-# button obok checkboxa w starcie
 # kalendarzyk może idk
-# niemożliwość klikania na wcześniejszy ekran milion razy
+# niemożliwość klikania na wcześniejszy ekran milion razy - TODO
