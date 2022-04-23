@@ -1,6 +1,6 @@
 import tkinter as tk
 from windows.login_window import LoginWindow
-from windows.exercise_windows import ExerciseWindow
+from windows.exercise_window import ExerciseWindow
 from windows.improvement_window import ImprovementWindow
 from windows.info_window import InfoWindow
 from windows.statistics_window import StatisticsWindow
@@ -225,30 +225,30 @@ class App(tk.Tk):
     # new windows
     def open_info_window(self):
         if not self.info_opened:
-            info_window = InfoWindow(self, self.info_opened)
+            info_window = InfoWindow(self)
             info_window.mainloop()
 
     def open_login_window(self):
         # TODO + csv + new window + change to log out
         if not self.login_opened:
-            login_window = LoginWindow(self, self.login_opened)
+            login_window = LoginWindow(self)
             login_window.mainloop()
 
     def open_improvement_window(self):
         # TODO
         if not self.improvement_opened:
-            improvement_window = ImprovementWindow(self, self.improvement_opened)
+            improvement_window = ImprovementWindow(self)
             improvement_window.mainloop()
 
     def open_statistics_window(self):
         # TODO
         if not self.statistics_opened:
-            statistics_window = StatisticsWindow(self, self.statistics_opened)
+            statistics_window = StatisticsWindow(self)
             statistics_window.mainloop()
 
     def open_exercise_window(self):
         if not self.exercise_opened:
-            exercise_window = ExerciseWindow(self, self.current_instrument, self.current_exercise, self.exercise_opened)
+            exercise_window = ExerciseWindow(self, self.current_instrument, self.current_exercise)
             exercise_window.mainloop()
 
 
@@ -262,3 +262,4 @@ if __name__ == "__main__":
 # language, password + user - password, user w csv ewentualnie chronione hasłem
 # kalendarzyk może idk
 # niemożliwość klikania na wcześniejszy ekran milion razy - TODO
+# ask about repetition in windows classes

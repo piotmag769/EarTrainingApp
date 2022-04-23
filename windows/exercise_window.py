@@ -1,16 +1,12 @@
 import tkinter as tk
 from enum_types import Instrument, Mode, Exercise
+from .base_window import BaseWindow
 
 
-class ExerciseWindow(tk.Toplevel):
-    def __init__(self, master_root, instrument, exercise, already_opened):
-
-        if already_opened:
-            super().destroy()
-            return
-
+class ExerciseWindow(BaseWindow):
+    def __init__(self, master_root, instrument, exercise):
         super().__init__(master_root)
-        self.wm_resizable(False, False)
+
         self.title("Exercise")
         self.geometry("850x700")
 
@@ -99,9 +95,3 @@ class ExerciseWindow(tk.Toplevel):
 
         # TODO buttons - button obok checkboxa w starcie
 
-        self.master_root = master_root
-        self.master_root.exercise_opened = True
-
-    def destroy(self):
-        self.master_root.exercise_opened = False
-        super().destroy()
