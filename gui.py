@@ -1,52 +1,67 @@
 import tkinter as tk
-from login_window import LoginWindow
-from exercise_windows import ExerciseWindow
+from windows.login_window import LoginWindow
+from windows.exercise_windows import ExerciseWindow
+from windows.improvement_window import ImprovementWindow
+from windows.info_window import InfoWindow
+from windows.statistics_window import StatisticsWindow
+
 from enum_types import Instrument, Mode, Exercise
 
 
 # we can split different windows into different classes + modules or sth
-class App:
-    def __init__(self, root):
-        self.root = root
+class App(tk.Tk):
+    def __init__(self):
+        super(App, self).__init__()
+
+        self.title("Ear Training App")
+        self.geometry("850x600")
+        self.wm_resizable(False, False)
 
         self.current_mode = Mode.EASY
         self.current_instrument = Instrument.PIANO
         self.current_exercise = Exercise.INTERVALS
 
+        self.exercise_opened = False
+        self.login_opened = False
+        self.info_opened = False
+        self.improvement_opened = False
+        self.statistics_opened = False
+
         button_font = ('Comic Sans MS', 10, 'bold')
+        instr_ex_mode_logged_font = ('Comic Sans MS', 12, 'bold italic')
 
         self.logged_label = tk.Label(
             text="You're not logged in - statistics will not be saved after closing!",
-            font=('Comic Sans MS', 12, 'bold italic'),
+            font=instr_ex_mode_logged_font,
         )
 
         self.mode_label = tk.Label(
             text="Current mode: EASY",
-            font=('Comic Sans MS', 12, 'bold italic'),
+            font=instr_ex_mode_logged_font,
         )
 
         self.instrument_label = tk.Label(
             text="Instrument picked: PIANO",
-            font=('Comic Sans MS', 12, 'bold italic'),
+            font=instr_ex_mode_logged_font,
         )
 
         self.ex_type_label = tk.Label(
             text="Exercise picked: INTERVALS",
-            font=('Comic Sans MS', 12, 'bold italic'),
+            font=instr_ex_mode_logged_font,
         )
 
         self.info_button = tk.Button(
-            root,
+            self,
             bg="pink",
             fg="white",
             width=22,
             text="Information about program",
             font=button_font,
-            command=lambda: self.open_program_info_window()
+            command=lambda: self.open_info_window()
         )
 
         self.login_button = tk.Button(
-            root,
+            self,
             bg="#B58B00",
             fg="white",
             width=15,
@@ -56,7 +71,7 @@ class App:
         )
 
         self.easy_button = tk.Button(
-            root,
+            self,
             bg="green",
             fg="white",
             width=15,
@@ -66,7 +81,7 @@ class App:
         )
 
         self.medium_button = tk.Button(
-            root,
+            self,
             bg="green",
             fg="white",
             width=15,
@@ -76,7 +91,7 @@ class App:
         )
 
         self.hard_button = tk.Button(
-            root,
+            self,
             bg="green",
             fg="white",
             width=15,
@@ -86,7 +101,7 @@ class App:
         )
 
         self.piano_button = tk.Button(
-            root,
+            self,
             bg="purple",
             fg="white",
             width=15,
@@ -96,7 +111,7 @@ class App:
         )
 
         self.guitar_button = tk.Button(
-            root,
+            self,
             bg="purple",
             fg="white",
             width=15,
@@ -106,7 +121,7 @@ class App:
         )
 
         self.trumpet_button = tk.Button(
-            root,
+            self,
             bg="purple",
             fg="white",
             width=15,
@@ -116,7 +131,7 @@ class App:
         )
 
         self.intervals_button = tk.Button(
-            root,
+            self,
             bg="orange",
             fg="white",
             width=15,
@@ -126,7 +141,7 @@ class App:
         )
 
         self.triads_button = tk.Button(
-            root,
+            self,
             bg="orange",
             fg="white",
             width=15,
@@ -136,7 +151,7 @@ class App:
         )
 
         self.dom_seventh_button = tk.Button(
-            root,
+            self,
             bg="orange",
             fg="white",
             width=15,
@@ -146,7 +161,7 @@ class App:
         )
 
         self.start_button = tk.Button(
-            root,
+            self,
             bg="red",
             fg="white",
             width=15,
@@ -156,7 +171,7 @@ class App:
         )
 
         self.statistics_button = tk.Button(
-            root,
+            self,
             bg="blue",
             fg="white",
             width=15,
@@ -166,7 +181,7 @@ class App:
         )
 
         self.improve_button = tk.Button(
-            root,
+            self,
             bg="blue",
             fg="white",
             width=15,
@@ -194,6 +209,7 @@ class App:
         self.statistics_button.place(x=50, y=550)
         self.improve_button.place(x=670, y=550)
 
+    # changing mode, instrument, ex_type
     def change_mode(self, mode: Mode):
         self.current_mode = mode
         self.mode_label['text'] = "Current mode: " + mode.name
@@ -206,47 +222,38 @@ class App:
         self.current_exercise = exercise
         self.ex_type_label['text'] = "Exercise picked: " + "DOMINANT 7TH" if exercise == Exercise.DOMINANT_7TH else exercise.name
 
-    def open_program_info_window(self):
-        # TODO
-        info_window = tk.Toplevel(self.root)
-        info_window.wm_resizable(False, False)
-        info_window.title("Information about program")
-        info_window.geometry("850x600")
-        info_window.mainloop()
+    # new windows
+    def open_info_window(self):
+        if not self.info_opened:
+            info_window = InfoWindow(self, self.info_opened)
+            info_window.mainloop()
 
     def open_login_window(self):
         # TODO + csv + new window + change to log out
-        login_window = LoginWindow(self.root)
-        login_window.mainloop()
+        if not self.login_opened:
+            login_window = LoginWindow(self, self.login_opened)
+            login_window.mainloop()
 
     def open_improvement_window(self):
         # TODO
-        improvement_window = tk.Toplevel(self.root)
-        improvement_window.wm_resizable(False, False)
-        improvement_window.title("Areas to improve")
-        improvement_window.geometry("850x600")
-        improvement_window.mainloop()
+        if not self.improvement_opened:
+            improvement_window = ImprovementWindow(self, self.improvement_opened)
+            improvement_window.mainloop()
 
     def open_statistics_window(self):
         # TODO
-        statistics_window = tk.Toplevel(self.root)
-        statistics_window.wm_resizable(False, False)
-        statistics_window.title("Statistics")
-        statistics_window.geometry("850x600")
-        statistics_window.mainloop()
+        if not self.statistics_opened:
+            statistics_window = StatisticsWindow(self, self.statistics_opened)
+            statistics_window.mainloop()
 
     def open_exercise_window(self):
-        exercise_window = ExerciseWindow(self.root, self.current_instrument, self.current_exercise)
-        exercise_window.mainloop()
+        if not self.exercise_opened:
+            exercise_window = ExerciseWindow(self, self.current_instrument, self.current_exercise, self.exercise_opened)
+            exercise_window.mainloop()
 
 
 def main():
-    initial = tk.Tk()
-    initial.title("Ear Training App")
-    initial.geometry("850x600")
-    initial.wm_resizable(False, False)
-    App(initial)
-    initial.mainloop()
+    App().mainloop()
 
 
 if __name__ == "__main__":

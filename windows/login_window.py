@@ -3,8 +3,12 @@ import tkinter as tk
 
 # it inherits from Toplevel so u can use deiconify() and withdraw() on its instance
 class LoginWindow(tk.Toplevel):
-    def __init__(self, root):
-        super().__init__(root)
+    def __init__(self, master_root, already_opened):
+        if already_opened:
+            super().destroy()
+            return
+
+        super().__init__(master_root)
         self.wm_resizable(False, False)
         self.title("Log in")
         self.geometry("850x600")
@@ -52,7 +56,8 @@ class LoginWindow(tk.Toplevel):
             fg="black",
             width=20,
             text="Create a new account!",
-            font=('Comic Sans MS', 10, 'bold')
+            font=('Comic Sans MS', 10, 'bold'),
+            command=lambda: self.add_user()
         )
 
         self.username_label.place(x=300, y=50)
@@ -64,3 +69,16 @@ class LoginWindow(tk.Toplevel):
         self.login_button.place(x=360, y=150)
         self.no_account_label.place(x=420, y=250, anchor="center")
         self.new_account_button.place(x=340, y=300)
+
+        self.master_root = master_root
+
+        self.master_root.login_opened = True
+
+    def destroy(self):
+        self.master_root.login_opened = False
+        super().destroy()
+
+    def add_user(self):
+        window = tk.Toplevel(self)
+        window.mainloop()
+
