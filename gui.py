@@ -209,6 +209,12 @@ class App(tk.Tk):
         self.statistics_button.place(x=50, y=550)
         self.improve_button.place(x=670, y=550)
 
+        self.update_idletasks()  # Update "requested size" from geometry manager
+
+        x = (self.winfo_screenwidth() - 850) / 2
+        y = (self.winfo_screenheight() - 700) / 2
+        self.geometry("+%d+%d" % (x, y))
+
     # changing mode, instrument, ex_type
     def change_mode(self, mode: Mode):
         self.current_mode = mode
@@ -261,5 +267,4 @@ if __name__ == "__main__":
 
 # language, password + user - password, user w csv ewentualnie chronione hasłem
 # kalendarzyk może idk
-# niemożliwość klikania na wcześniejszy ekran milion razy - TODO
 # ask about repetition in windows classes

@@ -1,14 +1,13 @@
 import tkinter as tk
 from .base_window import BaseWindow
+from .create_account_window import CreateAccountWindow
 
 
-# it inherits from Toplevel so u can use deiconify() and withdraw() on its instance
 class LoginWindow(BaseWindow):
     def __init__(self, master_root):
-        super().__init__(master_root)
+        super().__init__(master_root, 850, 600, "Log in")
 
-        self.title("Log in")
-        self.geometry("850x600")
+        self.create_account_opened = False
 
         self.username_label = tk.Label(
             self,
@@ -69,6 +68,7 @@ class LoginWindow(BaseWindow):
         self.new_account_button.place(x=340, y=300)
 
     def add_user(self):
-        window = tk.Toplevel(self)
-        window.mainloop()
+        if not self.create_account_opened:
+            window = CreateAccountWindow(self)
+            window.mainloop()
 

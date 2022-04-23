@@ -5,10 +5,7 @@ from .base_window import BaseWindow
 
 class ExerciseWindow(BaseWindow):
     def __init__(self, master_root, instrument, exercise):
-        super().__init__(master_root)
-
-        self.title("Exercise")
-        self.geometry("850x700")
+        super().__init__(master_root, 850, 700, "Exercise")
 
         harmonics_label = tk.Label(
             self,
@@ -86,12 +83,6 @@ class ExerciseWindow(BaseWindow):
         )
 
         start_button.place(x=350, y=630)
-
-        self.update_idletasks()  # Update "requested size" from geometry manager
-
-        x = (self.winfo_screenwidth() - 850) / 2
-        y = (self.winfo_screenheight() - 700) / 2
-        self.geometry("+%d+%d" % (x, y))
 
         # TODO buttons - button obok checkboxa w starcie
 
