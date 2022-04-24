@@ -59,28 +59,30 @@ class CreateAccountWindow(BaseWindow):
         if len(username) == 0:
             self.warning_label['text'] = "No username provided!"
             self.warning_label.place(x=100, y=200)
-            return
+        else:
+            user_exists = False
+            with open('users_passwords.csv', 'r') as csvfile:
+                csv_reader = csv.reader(csvfile, delimiter=',')
+                for row in csv_reader:
+                    if row[0] == username:
+                        user_exists = True
+                        break
 
-        user_exists = False
-        with open('users_passwords.csv', 'r') as csvfile:
-            csv_reader = csv.reader(csvfile, delimiter=',')
-            for row in csv_reader:
-                if row[0] == username:
-                    user_exists = True
-                    break
+            if user_exists:
+                self.warning_label['text'] = "Username already exists!"
+                self.warning_label.place(x=90, y=200)
 
-        if user_exists:
-            self.warning_label['text'] = "Username already exists!"
-            self.warning_label.place(x=90, y=200)
-            return
+            elif len(password) < 5:
+                self.warning_label['text'] = "Your password is too short!"
+                self.warning_label.place(x=90, y=200)
+                self.password_input.delete(0, len(password))
 
-        if len(password) < 5:
-            self.warning_label['text'] = "Your password is too short!"
-            self.warning_label.place(x=90, y=200)
-            return
+            else:
+                with open('users_passwords.csv', 'a', newline='\n') as csvfile:
+                    csv_writer = csv.writer(csvfile, delimiter=',')
+                    csv_writer.writerow([username, password])
+                    self.warning_label['text'] = "Account created successfully!"
+                    self.warning_label.place(x=85, y=200)
 
-        with open('users_passwords.csv', 'a', newline='\n') as csvfile:
-            csv_writer = csv.writer(csvfile, delimiter=',')
-            csv_writer.writerow([username, password])
-            self.warning_label['text'] = "Account created successfully!"
-            self.warning_label.place(x=85, y=200)
+        self.password_input.delete(0, len(password))
+        self.username_input.delete(0, len(username))

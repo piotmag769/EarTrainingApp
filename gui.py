@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from mode_picker import OptionsFrame
+from options_frame import OptionsFrame
 from windows.login_window import LoginWindow
 from windows.exercise_window import ExerciseWindow
 from windows.improvement_window import ImprovementWindow
@@ -28,11 +28,12 @@ class App(tk.Tk):
         self.improvement_opened = False
         self.statistics_opened = False
 
+        self.logged_user = None
+
         button_font = ('Comic Sans MS', 10, 'bold')
         instr_ex_mode_logged_font = ('Comic Sans MS', 12, 'bold italic')
 
         self.main_frame = OptionsFrame(self)
-
         self.main_frame.place(x=150, y=175)
 
         self.logged_label = tk.Label(
@@ -50,7 +51,7 @@ class App(tk.Tk):
             command=lambda: self.open_info_window()
         )
 
-        self.login_button = tk.Button(
+        self.log_in_button = tk.Button(
             self,
             bg="#B58B00",
             fg="white",
@@ -92,7 +93,7 @@ class App(tk.Tk):
 
         self.info_button.place(x=327.5, y=15)
         self.logged_label.place(x=420, y=75, anchor="center")
-        self.login_button.place(x=350, y=100)
+        self.log_in_button.place(x=350, y=100)
         self.start_button.place(x=350, y=500)
         self.statistics_button.place(x=50, y=550)
         self.improve_button.place(x=670, y=550)
@@ -103,6 +104,12 @@ class App(tk.Tk):
         y = (self.winfo_screenheight() - 700) / 2
         self.geometry("+%d+%d" % (x, y))
 
+    def log_out(self):
+        self.log_in_button['text'] = "Log in"
+        self.log_in_button['command'] = lambda: self.open_login_window()
+        self.logged_label['text'] = "You're not logged in - statistics will not be saved after closing!"
+        self.logged_user = None
+
     # new windows
     def open_info_window(self):
         if not self.info_opened:
@@ -110,7 +117,7 @@ class App(tk.Tk):
             info_window.mainloop()
 
     def open_login_window(self):
-        # TODO + csv + new window + change to log out
+        # TODO logging + change to log out
         if not self.login_opened:
             login_window = LoginWindow(self)
             login_window.mainloop()
@@ -142,3 +149,5 @@ if __name__ == "__main__":
 
 # language, password + user - password, user w csv ewentualnie chronione hasłem
 # kalendarzyk może idk
+# rozwiązanie wielokrotnego otwierania pliku csv
+# validate users_passwords file (?), change password (?)
