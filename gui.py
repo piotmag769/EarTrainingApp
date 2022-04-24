@@ -1,4 +1,6 @@
 import tkinter as tk
+
+from mode_picker import OptionsFrame
 from windows.login_window import LoginWindow
 from windows.exercise_window import ExerciseWindow
 from windows.improvement_window import ImprovementWindow
@@ -8,10 +10,9 @@ from windows.statistics_window import StatisticsWindow
 from enum_types import Instrument, Mode, Exercise
 
 
-# we can split different windows into different classes + modules or sth
 class App(tk.Tk):
     def __init__(self):
-        super(App, self).__init__()
+        super().__init__()
 
         self.title("Ear Training App")
         self.geometry("850x600")
@@ -30,23 +31,12 @@ class App(tk.Tk):
         button_font = ('Comic Sans MS', 10, 'bold')
         instr_ex_mode_logged_font = ('Comic Sans MS', 12, 'bold italic')
 
+        self.main_frame = OptionsFrame(self)
+
+        self.main_frame.place(x=150, y=175)
+
         self.logged_label = tk.Label(
             text="You're not logged in - statistics will not be saved after closing!",
-            font=instr_ex_mode_logged_font,
-        )
-
-        self.mode_label = tk.Label(
-            text="Current mode: EASY",
-            font=instr_ex_mode_logged_font,
-        )
-
-        self.instrument_label = tk.Label(
-            text="Instrument picked: PIANO",
-            font=instr_ex_mode_logged_font,
-        )
-
-        self.ex_type_label = tk.Label(
-            text="Exercise picked: INTERVALS",
             font=instr_ex_mode_logged_font,
         )
 
@@ -68,96 +58,6 @@ class App(tk.Tk):
             text="Log in",
             font=button_font,
             command=lambda: self.open_login_window()
-        )
-
-        self.easy_button = tk.Button(
-            self,
-            bg="green",
-            fg="white",
-            width=15,
-            text="EASY",
-            font=button_font,
-            command=lambda: self.change_mode(Mode.EASY)
-        )
-
-        self.medium_button = tk.Button(
-            self,
-            bg="green",
-            fg="white",
-            width=15,
-            text="MEDIUM",
-            font=button_font,
-            command=lambda: self.change_mode(Mode.MEDIUM)
-        )
-
-        self.hard_button = tk.Button(
-            self,
-            bg="green",
-            fg="white",
-            width=15,
-            text="HARD",
-            font=button_font,
-            command=lambda: self.change_mode(Mode.HARD)
-        )
-
-        self.piano_button = tk.Button(
-            self,
-            bg="purple",
-            fg="white",
-            width=15,
-            text="Piano",
-            font=button_font,
-            command=lambda: self.change_instrument(Instrument.PIANO)
-        )
-
-        self.guitar_button = tk.Button(
-            self,
-            bg="purple",
-            fg="white",
-            width=15,
-            text="Guitar",
-            font=button_font,
-            command=lambda: self.change_instrument(Instrument.GUITAR)
-        )
-
-        self.trumpet_button = tk.Button(
-            self,
-            bg="purple",
-            fg="white",
-            width=15,
-            text="Trumpet",
-            font=button_font,
-            command=lambda: self.change_instrument(Instrument.TRUMPET)
-        )
-
-        self.intervals_button = tk.Button(
-            self,
-            bg="orange",
-            fg="white",
-            width=15,
-            text="Intervals",
-            font=button_font,
-            command=lambda: self.change_ex_type(Exercise.INTERVALS)
-        )
-
-        self.triads_button = tk.Button(
-            self,
-            bg="orange",
-            fg="white",
-            width=15,
-            text="Triads",
-            font=button_font,
-            command=lambda: self.change_ex_type(Exercise.TRIADS)
-        )
-
-        self.dom_seventh_button = tk.Button(
-            self,
-            bg="orange",
-            fg="white",
-            width=15,
-            text="Dominant 7th",
-            font=button_font,
-            command=lambda: self.change_ex_type(Exercise.DOMINANT_7TH)
         )
 
         self.start_button = tk.Button(
@@ -192,19 +92,7 @@ class App(tk.Tk):
 
         self.info_button.place(x=327.5, y=15)
         self.logged_label.place(x=420, y=75, anchor="center")
-        self.mode_label.place(x=420, y=400, anchor="center")
-        self.instrument_label.place(x=420, y=425, anchor="center")
-        self.ex_type_label.place(x=420, y=450, anchor="center")
         self.login_button.place(x=350, y=100)
-        self.easy_button.place(x=150, y=175)
-        self.medium_button.place(x=350, y=175)
-        self.hard_button.place(x=550, y=175)
-        self.piano_button.place(x=150, y=250)
-        self.guitar_button.place(x=350, y=250)
-        self.trumpet_button.place(x=550, y=250)
-        self.intervals_button.place(x=150, y=325)
-        self.dom_seventh_button.place(x=350, y=325)
-        self.triads_button.place(x=550, y=325)
         self.start_button.place(x=350, y=500)
         self.statistics_button.place(x=50, y=550)
         self.improve_button.place(x=670, y=550)
@@ -214,19 +102,6 @@ class App(tk.Tk):
         x = (self.winfo_screenwidth() - 850) / 2
         y = (self.winfo_screenheight() - 700) / 2
         self.geometry("+%d+%d" % (x, y))
-
-    # changing mode, instrument, ex_type
-    def change_mode(self, mode: Mode):
-        self.current_mode = mode
-        self.mode_label['text'] = "Current mode: " + mode.name
-
-    def change_instrument(self, instrument: Instrument):
-        self.current_instrument = instrument
-        self.instrument_label['text'] = "Instrument picked: " + instrument.name
-
-    def change_ex_type(self, exercise: Exercise):
-        self.current_exercise = exercise
-        self.ex_type_label['text'] = "Exercise picked: " + "DOMINANT 7TH" if exercise == Exercise.DOMINANT_7TH else exercise.name
 
     # new windows
     def open_info_window(self):
@@ -267,4 +142,3 @@ if __name__ == "__main__":
 
 # language, password + user - password, user w csv ewentualnie chronione hasłem
 # kalendarzyk może idk
-# ask about repetition in windows classes
