@@ -46,7 +46,7 @@ class App(tk.Tk):
             bg="pink",
             fg="white",
             width=22,
-            text="Information about program",
+            text="Information about the program",
             font=button_font,
             command=lambda: self.open_info_window()
         )

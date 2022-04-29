@@ -1,12 +1,17 @@
 import tkinter as tk
 from enum_types import Instrument, Mode, Exercise
 from .base_window import BaseWindow
-
+import sys
+sys.path.append("..")
+from exercise_handler import ExerciseHandler
+import pygame
 
 class ExerciseWindow(BaseWindow):
+
     def __init__(self, master_root, instrument, exercise):
         super().__init__(master_root, 850, 700, "Exercise")
-
+        self.instrument_used = instrument
+        self.exercise_used = exercise
         harmonics_label = tk.Label(
             self,
             text="Choose mode: ",
@@ -19,20 +24,20 @@ class ExerciseWindow(BaseWindow):
         else:
             available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół']
 
-        variable = tk.StringVar()
-        variable.set(available_harmonics[0])
+        self.variable = tk.StringVar()
+        self.variable.set(available_harmonics[0])
 
-        dropdown = tk.OptionMenu(
+        self.dropdown = tk.OptionMenu(
             self,
-            variable,
+            self.variable,
             *available_harmonics,
         )
 
         # TODO - idk co tu chciałaś
-        dropdown['menu'].config(font=('Comic Sans MS', 12, 'bold'))
+        self.dropdown['menu'].config(font=('Comic Sans MS', 12, 'bold'))
 
         harmonics_label.place(x=350, y=20)
-        dropdown.place(x=350, y=70)
+        self.dropdown.place(x=350, y=70)
 
         if exercise == Exercise.INTERVALS:
             self.what_to_play = [tk.BooleanVar() for _ in range(13)]
@@ -80,9 +85,56 @@ class ExerciseWindow(BaseWindow):
             width=15,
             text="START!",
             font=('Comic Sans MS', 10, 'bold'),
+            command=lambda: self.start_exercising()
         )
 
         start_button.place(x=350, y=630)
 
         # TODO buttons - button obok checkboxa w starcie
+
+    def start_exercising(self):
+        start_ex_window = tk.Toplevel(self)
+        start_ex_window.title("Ćwiczenie")
+        start_ex_window.geometry("850x700")
+
+        self.exercise_handler = ExerciseHandler(self.instrument_used, self.exercise_used, self.variable.get(), self.what_to_play)
+        buttons_list = []
+        j = 0
+        for i in range (0, len(self.names), 1):
+            if (self.what_to_play[i].get() == True):
+                buttons_list.append(tk.Button(
+                start_ex_window,
+                bg="blue",
+                fg="white",
+                width=15,
+                text=self.names[i],
+                font=('Comic Sans MS', 10, 'bold'),
+                command=lambda: self.exercise_handler.check_accuracy
+                ))
+                buttons_list[j].place(x = 350, y = 40 + j * 40)
+                j += 1
+
+        next_button = tk.Button(
+            start_ex_window,
+            bg="blue",
+            text = "NEXT",
+            fg="orange",
+            width=15,
+            font=('Comic Sans MS', 10, 'bold'),
+            command = lambda:  self.exercise_handler.next_sound()
+        )
+
+        next_button.place(x = 600, y = 600)
+
+        repeat_button = tk.Button(
+            start_ex_window,
+            bg="blue",
+            fg="white",
+            width=15,
+            font=('Comic Sans MS', 10, 'bold'),
+            command=lambda:  self.exercise_handler.repeat_sound
+        )
+        start_ex_window.mainloop()
+
+
 
