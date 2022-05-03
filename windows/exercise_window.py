@@ -4,7 +4,6 @@ from .base_window import BaseWindow
 import sys
 sys.path.append("..")
 from exercise_handler import ExerciseHandler
-import pygame
 
 class ExerciseWindow(BaseWindow):
 
@@ -90,7 +89,6 @@ class ExerciseWindow(BaseWindow):
 
         start_button.place(x=350, y=630)
 
-        # TODO buttons - button obok checkboxa w starcie
 
     def start_exercising(self):
         start_ex_window = tk.Toplevel(self)
@@ -116,7 +114,7 @@ class ExerciseWindow(BaseWindow):
 
         next_button = tk.Button(
             start_ex_window,
-            bg="blue",
+            bg="red",
             text = "NEXT",
             fg="orange",
             width=15,
@@ -124,16 +122,20 @@ class ExerciseWindow(BaseWindow):
             command = lambda:  self.exercise_handler.next_sound()
         )
 
-        next_button.place(x = 600, y = 600)
+
 
         repeat_button = tk.Button(
             start_ex_window,
-            bg="blue",
-            fg="white",
+            bg="red",
+            fg="orange",
+            text = "REPEAT",
             width=15,
             font=('Comic Sans MS', 10, 'bold'),
-            command=lambda:  self.exercise_handler.repeat_sound
+            command=lambda:  self.exercise_handler.repeat_sound()
         )
+
+        next_button.place(x=530, y=600)
+        repeat_button.place(x = 670, y = 600)
         start_ex_window.mainloop()
 
 
