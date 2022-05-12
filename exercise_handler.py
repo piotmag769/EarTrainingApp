@@ -16,8 +16,7 @@ class ExerciseHandler():
         for i in range(0, len(sounds), 1):
             self.sounds.append(sounds[i].get())
 
-    #TODO w zaleznosci od wybranego trybu tworzy rozne listy (albo korzysta z juz utworzonych?) i potem sobie to bedzie rozpoznawal
-    #TODO ale do tego trzeba miec nagrania .
+
 
     def check_accuracy(self):
         pass

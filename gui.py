@@ -10,6 +10,7 @@ from windows.statistics_window import StatisticsWindow
 from enum_types import Instrument, Mode, Exercise
 
 
+
 class App(tk.Tk):
     def __init__(self):
         super().__init__()

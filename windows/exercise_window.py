@@ -39,8 +39,8 @@ class ExerciseWindow(BaseWindow):
         self.dropdown.place(x=350, y=70)
 
         if exercise == Exercise.INTERVALS:
-            self.what_to_play = [tk.BooleanVar() for _ in range(13)]
-            self.names = ['Pryma 1', 'Sekunda mała 2>', 'Sekundka wielka 2', 'Tercja mała 3>', 'Tercja wielka 3',
+            self.what_to_play = [tk.BooleanVar() for _ in range(12)]
+            self.names = ['Sekunda mała 2>', 'Sekundka wielka 2', 'Tercja mała 3>', 'Tercja wielka 3',
                                'Kwarta czysta 4', 'Tryton 4</5>', 'Kwinta czysta 5', 'Seksta mała 6>',' Seksta wielka 6',
                                'Septyma mała 7', 'Septyma wielka 7<', 'Oktawa']
 
