@@ -7,10 +7,11 @@ from exercise_handler import ExerciseHandler
 
 class ExerciseWindow(BaseWindow):
 
-    def __init__(self, master_root, instrument, exercise):
+    def __init__(self, master_root, instrument, exercise, mode):
         super().__init__(master_root, 850, 700, "Exercise")
         self.instrument_used = instrument
         self.exercise_used = exercise
+        self.mode_used = mode
         harmonics_label = tk.Label(
             self,
             text="Choose mode: ",
@@ -18,8 +19,13 @@ class ExerciseWindow(BaseWindow):
         )
 
         if instrument != Instrument.TRUMPET:
-            available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół', 'harmonicznie',
+            if instrument == Instrument.GUITAR and exercise == Exercise.DOMINANT_7TH:
+                available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół']
+            elif exercise == Exercise.TRIADS:
+                available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół', 'harmonicznie',
                                    'melodycznie w górę + harmonicznie', 'melodycznie w dół + harmonicznie']
+            else:
+                available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół', 'harmonicznie']
         else:
             available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół']
 
@@ -95,7 +101,7 @@ class ExerciseWindow(BaseWindow):
         start_ex_window.title("Ćwiczenie")
         start_ex_window.geometry("850x700")
 
-        self.exercise_handler = ExerciseHandler(self.instrument_used, self.exercise_used, self.variable.get(), self.what_to_play)
+        self.exercise_handler = ExerciseHandler(self.instrument_used, self.exercise_used, self.variable.get(), self.what_to_play, self.mode_used)
         buttons_list = []
         j = 0
         for i in range (0, len(self.names), 1):

@@ -137,7 +137,7 @@ class App(tk.Tk):
 
     def open_exercise_window(self):
         if not self.exercise_opened:
-            exercise_window = ExerciseWindow(self, self.current_instrument, self.current_exercise)
+            exercise_window = ExerciseWindow(self, self.current_instrument, self.current_exercise, self.current_mode)
             exercise_window.mainloop()
 
 
