@@ -5,10 +5,11 @@ import pygame
 from pydub.playback import play
 from pydub import AudioSegment
 
+# TODO KOLEJNOSC
 dom_7_options = ['zas', 'kw_sek', 'ter_kw', 'sek']
 triad_options = ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64',
                  'zmn_z', 'zmn_6', 'zmn_64', 'zwiek']
-interval_options = ['2_m', '2_w', '3_m', '3_w', '4', 'tryt', '5', '6_m', '6_w', '7_m', '7_w', '8']
+interval_options = ['2_m', '2_w', '3_m', '3_w', '3_z_tryt' '4', '5', '6_m', '6_w', '7_m', '7_w', '8']
 
 
 class ExerciseHandler:
@@ -22,73 +23,86 @@ class ExerciseHandler:
         self.exercise = exercise
         pygame.mixer.init()
         self.instrument = instrument
-        path = "C:\\Users\\dorot\\Documents\\STUDIA_materialy\\SEMESTR4\\Python\\projekt\\EarTrainingApp\\sounds\\"
+        self.song = None
+        self.sound_type = None
+        self.path = os.path.join(os.path.dirname(__file__), "sounds/")
         for i in range(0, len(sounds), 1):
             self.sounds.append(sounds[i].get())
 
         if self.mode == mode.EASY:
-            path += "easy\\"
+            self.path += "easy/"
         elif self.mode == mode.MEDIUM:
-            path += "medium\\"
+            self.path += "medium/"
         else:
-            path += "hard\\"
+            self.path += "hard/"
 
         if self.instrument == Instrument.GUITAR:
-            path += "guitar\\"
+            self.path += "guitar/"
         elif self.instrument == Instrument.PIANO:
-            path += "piano\\"
+            self.path += "piano/"
         else:
-            path += "trumpet\\"
+            self.path += "trumpet/"
 
         if self.exercise == Exercise.INTERVALS:
-            path += "int\\"
+            self.path += "int/"
             if self.harmonics == 'melodycznie - w górę':
-                path += "up\\"
+                self.path += "up/"
             elif self.harmonics == 'melodycznie - w dół':
-                path += "down\\"
+                self.path += "down/"
             else:
-                path += "harm\\"
+                self.path += "harm/"
         elif self.exercise == Exercise.DOMINANT_7TH:
-            path += "dom_7\\"
+            self.path += "dom_7/"
             if self.harmonics == 'melodycznie - w górę':
-                path += "up\\"
+                self.path += "up/"
             elif self.harmonics == 'melodycznie - w dół':
-                path += "down\\"
+                self.path += "down/"
             elif self.harmonics == 'harmonicznie':
-                path += "harm\\"
+                self.path += "harm/"
             elif self.harmonics == 'melodycznie w górę + harmonicznie':
-                path += "up_h\\"
+                self.path += "up_h/"
             else:
-                path += "down_h\\"
+                self.path += "down_h/"
         else:
-            path += "triads\\"
+            self.path += "triads/"
             if self.harmonics == 'melodycznie - w górę':
-                path += "up\\"
+                self.path += "up/"
             elif self.harmonics == 'melodycznie - w dół':
-                path += "down\\"
+                self.path += "down/"
             elif self.harmonics == 'harmonicznie':
-                path += "harm\\"
+                self.path += "harm/"
             elif self.harmonics == 'melodycznie w górę + harmonicznie':
-                path += "up_h\\"
+                self.path += "up_h/"
             else:
-                path += "down_h\\"
+                self.path += "down_h/"
             for i in range(0, len(self.sounds), 1):
                 if self.sounds[i]:
                     pass
 
-    def check_accuracy(self):
-        pass
+    def check_accuracy(self, num):
+        names_tab = triad_options
+        if self.exercise == Exercise.INTERVALS:
+            names_tab = interval_options
+        elif self.exercise == Exercise.DOMINANT_7TH:
+            names_tab = dom_7_options
+
+        res = "WRONG!"
+        
+        if names_tab.index(self.sound_type) == num:
+            res = "CORRECT!"
+
+        print(names_tab.index(self.sound_type), num)
+        print(res)
 
     def next_sound(self):
-        path = "C:\\Users\\dorot\\Music\\svt"
-        files = os.listdir(path)
-        d = random.choice(files)
-        # song = AudioSegment.from_mp3("C:\\Users\\dorot\\Music\\ymmd\\" + d)
-        self.song = "C:\\Users\\dorot\\Music\\svt\\" + d
-        # play(song)
+        self.sound_type = random.choice(os.listdir(self.path))
+        self.song = self.path + self.sound_type + '/' + random.choice(os.listdir(self.path + self.sound_type))
+        print(self.song)
         pygame.mixer.music.load(self.song)
         pygame.mixer.music.play(loops=0)
 
     def repeat_sound(self):
+        if self.song is None:
+            return
         pygame.mixer.music.load(self.song)
         pygame.mixer.music.play(loops=0)
