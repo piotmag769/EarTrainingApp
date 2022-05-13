@@ -109,6 +109,8 @@ class ExerciseWindow(BaseWindow):
         args_list = [x for x in range(len(self.names))]
         j = 0
         for i in range(0, len(self.names)):
+            temp = tk.IntVar()
+            temp.set(i)
             if self.what_to_play[i].get():
                 buttons_list.append(tk.Button(
                     start_ex_window,
@@ -117,7 +119,7 @@ class ExerciseWindow(BaseWindow):
                     width=15,
                     text=self.names[i],
                     font=('Comic Sans MS', 10, 'bold'),
-                    command=lambda: self.exercise_handler.check_accuracy(deepcopy(i))
+                    command=lambda: self.exercise_handler.check_accuracy(temp.get())
                 ))
                 buttons_list[j].place(x=350, y=40 + j * 40)
                 j += 1
