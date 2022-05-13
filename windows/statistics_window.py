@@ -9,15 +9,11 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class StatisticsWindow(BaseWindow):
     def __init__(self, master_root):
-        super().__init__(master_root, 850, 600, "Statistics")
+        super().__init__(master_root, 550, 475, "Statistics")
         fig = plt.figure()
         ax = fig.add_subplot(111)
         exercises = ["Intervals", "Dominants 7th", "Triads"]
-        avgs = []
-
-        avgs.append(self.average_exercise_score(Exercise.INTERVALS))
-        avgs.append(self.average_exercise_score(Exercise.DOMINANT_7TH))
-        avgs.append(self.average_exercise_score(Exercise.TRIADS))
+        avgs = [100*self.average_exercise_score(x) for x in Exercise]
 
         ax.bar(exercises, avgs)
 

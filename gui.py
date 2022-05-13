@@ -91,7 +91,7 @@ class App(tk.Tk):
             command=lambda: self.open_improvement_window()
         )
 
-        self.info_button.place(x=327.5, y=15)
+        self.info_button.place(x=320, y=15)
         self.logged_label.place(x=420, y=75, anchor="center")
         self.log_in_button.place(x=350, y=100)
         self.start_button.place(x=350, y=500)

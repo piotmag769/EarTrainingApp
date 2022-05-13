@@ -1,8 +1,7 @@
 import tkinter as tk
-from copy import deepcopy
 
-from exercise_handler import ExerciseHandler
-from enum_types import Instrument, Mode, Exercise
+from windows.exercise_handler import ExerciseHandler
+from enum_types import Instrument, Exercise
 from .base_window import BaseWindow
 import sys
 
@@ -106,11 +105,9 @@ class ExerciseWindow(BaseWindow):
         self.exercise_handler = ExerciseHandler(self.instrument_used, self.exercise_used, self.variable.get(),
                                                 self.what_to_play, self.mode_used)
         buttons_list = []
-        args_list = [x for x in range(len(self.names))]
+
         j = 0
         for i in range(0, len(self.names)):
-            temp = tk.IntVar()
-            temp.set(i)
             if self.what_to_play[i].get():
                 buttons_list.append(tk.Button(
                     start_ex_window,
@@ -119,7 +116,8 @@ class ExerciseWindow(BaseWindow):
                     width=15,
                     text=self.names[i],
                     font=('Comic Sans MS', 10, 'bold'),
-                    command=lambda: self.exercise_handler.check_accuracy(temp.get())
+                    command=lambda: self.exercise_handler.check_accuracy(i)
+                    # TODO funkcja zwracająca funkcję
                 ))
                 buttons_list[j].place(x=350, y=40 + j * 40)
                 j += 1

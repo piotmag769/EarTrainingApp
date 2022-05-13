@@ -7,7 +7,7 @@ from enum_types import Exercise
 
 class ImprovementWindow(BaseWindow):
     def __init__(self, master_root):
-        super().__init__(master_root, 500, 300, "Areas to improve")
+        super().__init__(master_root, 400, 140, "Areas to improve")
         self.find_weak_points()
 
     def find_weak_points(self):
@@ -21,25 +21,31 @@ class ImprovementWindow(BaseWindow):
             font=('Comic Sans MS', 12, 'bold italic')
         )
 
-        my_game = ttk.Treeview(self)
+        my_game = ttk.Treeview(self, height=3)
+
+        style = ttk.Style()
+        style.configure("Treeview.Heading", font=('Comic Sans MS', 10, 'bold'))
 
         columns = ("Category", "Exercise", "Score")
         my_game['columns'] = columns
 
         my_game.column("#0", width=0, stretch=tk.NO)
-        my_game.column("Category", anchor=tk.CENTER, width=80)
-        my_game.column("Exercise", anchor=tk.CENTER, width=200)
-        my_game.column("Score", anchor=tk.CENTER, width=80)
+        my_game.column("Category", anchor=tk.CENTER, width=80, stretch=tk.NO)
+        my_game.column("Exercise", anchor=tk.CENTER, width=200, stretch=tk.NO)
+        my_game.column("Score", anchor=tk.CENTER, width=80, stretch=tk.NO)
 
         for column in columns:
             my_game.heading(column, text=column, anchor=tk.CENTER)
 
         my_game.insert(parent='', index='end', iid=0, text='',
-                       values=("Intervals", worst_int[0], str(int(worst_int[1]*100)) + "%" if worst_int[1] != float('inf') else "None"))
+                       values=("Intervals", worst_int[0],
+                               str(int(worst_int[1] * 100)) + "%" if worst_int[1] != float('inf') else "None"))
         my_game.insert(parent='', index='end', iid=1, text='',
-                       values=("Dominants", worst_dom[0], str(int(worst_dom[1]*100)) + "%" if worst_dom[1] != float('inf') else "None"))
+                       values=("Dominants", worst_dom[0],
+                               str(int(worst_dom[1] * 100)) + "%" if worst_dom[1] != float('inf') else "None"))
         my_game.insert(parent='', index='end', iid=2, text='',
-                       values=("Triads", worst_triad[0], str(int(worst_triad[1]*100)) + "%" if worst_triad[1] != float('inf') else "None" ))
+                       values=("Triads", worst_triad[0],
+                               str(int(worst_triad[1] * 100)) + "%" if worst_triad[1] != float('inf') else "None"))
 
         info_label.pack()
 

@@ -25,7 +25,7 @@ class ExerciseHandler:
         self.instrument = instrument
         self.song = None
         self.sound_type = None
-        self.path = os.path.join(os.path.dirname(__file__), "sounds/")
+        self.path = os.path.join(os.path.dirname(__file__), "../sounds/")
         for i in range(0, len(sounds), 1):
             self.sounds.append(sounds[i].get())
 
@@ -80,6 +80,8 @@ class ExerciseHandler:
                     pass
 
     def check_accuracy(self, num):
+        if self.exercise is None:
+            return
         names_tab = triad_options
         if self.exercise == Exercise.INTERVALS:
             names_tab = interval_options
@@ -87,7 +89,7 @@ class ExerciseHandler:
             names_tab = dom_7_options
 
         res = "WRONG!"
-        
+
         if names_tab.index(self.sound_type) == num:
             res = "CORRECT!"
 
