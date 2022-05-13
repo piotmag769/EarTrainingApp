@@ -142,4 +142,4 @@ class OptionsFrame(tk.Frame):
 
     def change_ex_type(self, exercise: Exercise):
         self.master_root.current_exercise = exercise
-        self.ex_type_label['text'] = "Exercise picked: " + "DOMINANT 7TH" if exercise == Exercise.DOMINANT_7TH else exercise.name
+        self.ex_type_label['text'] = "Exercise picked: " + ("DOMINANT 7TH" if exercise == Exercise.DOMINANT_7TH else exercise.name)

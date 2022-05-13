@@ -10,7 +10,6 @@ from windows.statistics_window import StatisticsWindow
 from enum_types import Instrument, Mode, Exercise
 
 
-
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -46,7 +45,7 @@ class App(tk.Tk):
             self,
             bg="pink",
             fg="white",
-            width=22,
+            width=25,
             text="Information about the program",
             font=button_font,
             command=lambda: self.open_info_window()
@@ -86,7 +85,7 @@ class App(tk.Tk):
             self,
             bg="blue",
             fg="white",
-            width=15,
+            width=16,
             text="Areas to improve in",
             font=button_font,
             command=lambda: self.open_improvement_window()
@@ -150,5 +149,5 @@ if __name__ == "__main__":
 
 # language, password + user - password, user w csv ewentualnie chronione hasłem
 # kalendarzyk może idk
-# rozwiązanie wielokrotnego otwierania pliku csv
+# rozwiązanie wielokrotnego otwierania pliku csv - trzymać w pamięci i na końcu zapisać
 # validate users_passwords file (?), change password (?)

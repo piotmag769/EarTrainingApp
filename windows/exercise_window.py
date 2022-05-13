@@ -1,12 +1,13 @@
 import tkinter as tk
+from exercise_handler import ExerciseHandler
 from enum_types import Instrument, Mode, Exercise
 from .base_window import BaseWindow
 import sys
+
 sys.path.append("..")
-from exercise_handler import ExerciseHandler
+
 
 class ExerciseWindow(BaseWindow):
-
     def __init__(self, master_root, instrument, exercise, mode):
         super().__init__(master_root, 850, 700, "Exercise")
         self.instrument_used = instrument
@@ -23,7 +24,7 @@ class ExerciseWindow(BaseWindow):
                 available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół']
             elif exercise == Exercise.TRIADS:
                 available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół', 'harmonicznie',
-                                   'melodycznie w górę + harmonicznie', 'melodycznie w dół + harmonicznie']
+                                       'melodycznie w górę + harmonicznie', 'melodycznie w dół + harmonicznie']
             else:
                 available_harmonics = ['melodycznie - w górę', 'melodycznie - w dół', 'harmonicznie']
         else:
@@ -47,8 +48,8 @@ class ExerciseWindow(BaseWindow):
         if exercise == Exercise.INTERVALS:
             self.what_to_play = [tk.BooleanVar() for _ in range(12)]
             self.names = ['Sekunda mała 2>', 'Sekundka wielka 2', 'Tercja mała 3>', 'Tercja wielka 3',
-                               'Kwarta czysta 4', 'Tryton 4</5>', 'Kwinta czysta 5', 'Seksta mała 6>',' Seksta wielka 6',
-                               'Septyma mała 7', 'Septyma wielka 7<', 'Oktawa']
+                          'Kwarta czysta 4', 'Tryton 4</5>', 'Kwinta czysta 5', 'Seksta mała 6>', ' Seksta wielka 6',
+                          'Septyma mała 7', 'Septyma wielka 7<', 'Oktawa']
 
             infix = "intervals "
 
@@ -61,8 +62,8 @@ class ExerciseWindow(BaseWindow):
         else:
             self.what_to_play = [tk.BooleanVar() for _ in range(10)]
             self.names = ['Durowy zasadniczy', 'Durowy sekstowy', 'Durowy kwartsekstowy', 'Molowy zasadniczy',
-                            'Molowy sekstowy', 'Molowy kwartsekstowy', 'Zmniejszony zasadniczy', 'Zmniejszony sekstowy',
-                            'Zmniejszony kwartsekstowy', 'Zwiększony kwartsekstowy']
+                          'Molowy sekstowy', 'Molowy kwartsekstowy', 'Zmniejszony zasadniczy', 'Zmniejszony sekstowy',
+                          'Zmniejszony kwartsekstowy', 'Zwiększony kwartsekstowy']
 
             infix = "triads "
 
@@ -95,54 +96,49 @@ class ExerciseWindow(BaseWindow):
 
         start_button.place(x=350, y=630)
 
-
     def start_exercising(self):
         start_ex_window = tk.Toplevel(self)
         start_ex_window.title("Ćwiczenie")
         start_ex_window.geometry("850x700")
 
-        self.exercise_handler = ExerciseHandler(self.instrument_used, self.exercise_used, self.variable.get(), self.what_to_play, self.mode_used)
+        self.exercise_handler = ExerciseHandler(self.instrument_used, self.exercise_used, self.variable.get(),
+                                                self.what_to_play, self.mode_used)
         buttons_list = []
         j = 0
-        for i in range (0, len(self.names), 1):
-            if (self.what_to_play[i].get() == True):
+        for i in range(0, len(self.names), 1):
+            if self.what_to_play[i].get():
                 buttons_list.append(tk.Button(
-                start_ex_window,
-                bg="blue",
-                fg="white",
-                width=15,
-                text=self.names[i],
-                font=('Comic Sans MS', 10, 'bold'),
-                command=lambda: self.exercise_handler.check_accuracy
+                    start_ex_window,
+                    bg="blue",
+                    fg="white",
+                    width=15,
+                    text=self.names[i],
+                    font=('Comic Sans MS', 10, 'bold'),
+                    command=lambda: self.exercise_handler.check_accuracy
                 ))
-                buttons_list[j].place(x = 350, y = 40 + j * 40)
+                buttons_list[j].place(x=350, y=40 + j * 40)
                 j += 1
 
         next_button = tk.Button(
             start_ex_window,
             bg="red",
-            text = "NEXT",
+            text="NEXT",
             fg="orange",
             width=15,
             font=('Comic Sans MS', 10, 'bold'),
-            command = lambda:  self.exercise_handler.next_sound()
+            command=lambda: self.exercise_handler.next_sound()
         )
-
-
 
         repeat_button = tk.Button(
             start_ex_window,
             bg="red",
             fg="orange",
-            text = "REPEAT",
+            text="REPEAT",
             width=15,
             font=('Comic Sans MS', 10, 'bold'),
-            command=lambda:  self.exercise_handler.repeat_sound()
+            command=lambda: self.exercise_handler.repeat_sound()
         )
 
         next_button.place(x=530, y=600)
-        repeat_button.place(x = 670, y = 600)
+        repeat_button.place(x=670, y=600)
         start_ex_window.mainloop()
-
-
-

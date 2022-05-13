@@ -11,11 +11,7 @@ triad_options = ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64',
 interval_options = ['2_m', '2_w', '3_m', '3_w', '4', 'tryt', '5', '6_m', '6_w', '7_m', '7_w', '8']
 
 
-
-class ExerciseHandler():
-
-
-
+class ExerciseHandler:
     def __init__(self, instrument, exercise, harmonics, sounds, mode):
         self.harmonics = harmonics
         self.mode = mode
@@ -77,13 +73,8 @@ class ExerciseHandler():
             else:
                 path += "down_h\\"
             for i in range(0, len(self.sounds), 1):
-                if self.sounds[i] == True:
-                    
-
-
-
-
-
+                if self.sounds[i]:
+                    pass
 
     def check_accuracy(self):
         pass
@@ -92,13 +83,12 @@ class ExerciseHandler():
         path = "C:\\Users\\dorot\\Music\\svt"
         files = os.listdir(path)
         d = random.choice(files)
-        #song = AudioSegment.from_mp3("C:\\Users\\dorot\\Music\\ymmd\\" + d)
+        # song = AudioSegment.from_mp3("C:\\Users\\dorot\\Music\\ymmd\\" + d)
         self.song = "C:\\Users\\dorot\\Music\\svt\\" + d
-        #play(song)
+        # play(song)
         pygame.mixer.music.load(self.song)
         pygame.mixer.music.play(loops=0)
 
     def repeat_sound(self):
         pygame.mixer.music.load(self.song)
         pygame.mixer.music.play(loops=0)
-
