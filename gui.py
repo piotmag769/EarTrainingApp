@@ -48,7 +48,7 @@ class App(tk.Tk):
             width=25,
             text="Information about the program",
             font=button_font,
-            command=lambda: self.open_info_window()
+            command=self.open_info_window
         )
 
         self.log_in_button = tk.Button(
@@ -58,7 +58,7 @@ class App(tk.Tk):
             width=15,
             text="Log in",
             font=button_font,
-            command=lambda: self.open_login_window()
+            command=self.open_login_window
         )
 
         self.start_button = tk.Button(
@@ -68,7 +68,7 @@ class App(tk.Tk):
             width=15,
             text="START!",
             font=button_font,
-            command=lambda: self.open_exercise_window()
+            command=self.open_exercise_window
         )
 
         self.statistics_button = tk.Button(
@@ -78,7 +78,7 @@ class App(tk.Tk):
             width=15,
             text="Statistics",
             font=button_font,
-            command=lambda: self.open_statistics_window()
+            command=self.open_statistics_window
         )
 
         self.improve_button = tk.Button(
@@ -88,7 +88,7 @@ class App(tk.Tk):
             width=16,
             text="Areas to improve in",
             font=button_font,
-            command=lambda: self.open_improvement_window()
+            command=self.open_improvement_window
         )
 
         self.info_button.place(x=320, y=15)
@@ -106,7 +106,7 @@ class App(tk.Tk):
 
     def log_out(self):
         self.log_in_button['text'] = "Log in"
-        self.log_in_button['command'] = lambda: self.open_login_window()
+        self.log_in_button['command'] = self.open_login_window
         self.logged_label['text'] = "You're not logged in - statistics will not be saved after closing!"
         self.logged_user = None
 

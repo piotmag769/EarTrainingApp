@@ -50,7 +50,7 @@ class LoginWindow(BaseWindow):
             width=20,
             text="Create a new account!",
             font=('Comic Sans MS', 10, 'bold'),
-            command=lambda: self.add_user()
+            command=self.add_user
         )
 
         self.login_label = tk.Label(
@@ -99,7 +99,7 @@ class LoginWindow(BaseWindow):
             # self.login_label['text'] = "Logged in successfully!"
             # self.login_label.place(x=160, y=210)
             self.master_root.log_in_button['text'] = "Log out"
-            self.master_root.log_in_button['command'] = lambda: self.master_root.log_out()
+            self.master_root.log_in_button['command'] = self.master_root.log_out
             self.master_root.logged_label['text'] = "Hi, " + username + "!"
             self.master_root.logged_user = username
             self.destroy()

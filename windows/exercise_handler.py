@@ -9,7 +9,7 @@ from pydub import AudioSegment
 dom_7_options = ['zas', 'kw_sek', 'ter_kw', 'sek']
 triad_options = ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64',
                  'zmn_z', 'zmn_6', 'zmn_64', 'zwiek']
-interval_options = ['2_m', '2_w', '3_m', '3_w', '3_z_tryt' '4', '5', '6_m', '6_w', '7_m', '7_w', '8']
+interval_options = ['2_m', '2_w', '3_m', '3_w', '4', '4_5_tryt', '5', '6_m', '6_w', '7_m', '7_w', '8']
 
 
 class ExerciseHandler:
@@ -79,9 +79,13 @@ class ExerciseHandler:
                 if self.sounds[i]:
                     pass
 
+    def check_accuracy_outer(self, num):
+        return lambda: self.check_accuracy(num)
+
     def check_accuracy(self, num):
-        if self.exercise is None:
+        if self.song is None:
             return
+
         names_tab = triad_options
         if self.exercise == Exercise.INTERVALS:
             names_tab = interval_options
@@ -93,7 +97,6 @@ class ExerciseHandler:
         if names_tab.index(self.sound_type) == num:
             res = "CORRECT!"
 
-        print(names_tab.index(self.sound_type), num)
         print(res)
 
     def next_sound(self):

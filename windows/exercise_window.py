@@ -92,7 +92,7 @@ class ExerciseWindow(BaseWindow):
             width=15,
             text="START!",
             font=('Comic Sans MS', 10, 'bold'),
-            command=lambda: self.start_exercising()
+            command=self.start_exercising
         )
 
         start_button.place(x=350, y=630)
@@ -107,7 +107,7 @@ class ExerciseWindow(BaseWindow):
         buttons_list = []
 
         j = 0
-        for i in range(0, len(self.names)):
+        for i in range(len(self.names)):
             if self.what_to_play[i].get():
                 buttons_list.append(tk.Button(
                     start_ex_window,
@@ -116,8 +116,8 @@ class ExerciseWindow(BaseWindow):
                     width=15,
                     text=self.names[i],
                     font=('Comic Sans MS', 10, 'bold'),
-                    command=lambda: self.exercise_handler.check_accuracy(i)
-                    # TODO funkcja zwracająca funkcję
+                    command=self.exercise_handler.check_accuracy_outer(i)
+                    # https://stackoverflow.com/questions/45134097/deep-copy-index-integer-using-lambda
                 ))
                 buttons_list[j].place(x=350, y=40 + j * 40)
                 j += 1
@@ -129,7 +129,7 @@ class ExerciseWindow(BaseWindow):
             fg="orange",
             width=15,
             font=('Comic Sans MS', 10, 'bold'),
-            command=lambda: self.exercise_handler.next_sound()
+            command=self.exercise_handler.next_sound
         )
 
         repeat_button = tk.Button(
@@ -139,7 +139,7 @@ class ExerciseWindow(BaseWindow):
             text="REPEAT",
             width=15,
             font=('Comic Sans MS', 10, 'bold'),
-            command=lambda: self.exercise_handler.repeat_sound()
+            command=self.exercise_handler.repeat_sound
         )
 
         next_button.place(x=530, y=600)
