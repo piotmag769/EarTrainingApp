@@ -2,7 +2,7 @@ import tkinter as tk
 
 from options_frame import OptionsFrame
 from windows.login_window import LoginWindow
-from windows.exercise_window import ExerciseWindow
+from windows.choose_exercise_window import ChooseExerciseWindow
 from windows.improvement_window import ImprovementWindow
 from windows.info_window import InfoWindow
 from windows.statistics_window import StatisticsWindow
@@ -22,7 +22,7 @@ class App(tk.Tk):
         self.current_instrument = Instrument.PIANO
         self.current_exercise = Exercise.INTERVALS
 
-        self.exercise_opened = False
+        self.choose_exercise_opened = False
         self.login_opened = False
         self.info_opened = False
         self.improvement_opened = False
@@ -117,27 +117,24 @@ class App(tk.Tk):
             info_window.mainloop()
 
     def open_login_window(self):
-        # TODO logging + change to log out
         if not self.login_opened:
             login_window = LoginWindow(self)
             login_window.mainloop()
 
     def open_improvement_window(self):
-        # TODO
         if not self.improvement_opened:
             improvement_window = ImprovementWindow(self)
             improvement_window.mainloop()
 
     def open_statistics_window(self):
-        # TODO
         if not self.statistics_opened:
             statistics_window = StatisticsWindow(self)
             statistics_window.mainloop()
 
     def open_exercise_window(self):
-        if not self.exercise_opened:
-            exercise_window = ExerciseWindow(self, self.current_instrument, self.current_exercise, self.current_mode)
-            exercise_window.mainloop()
+        if not self.choose_exercise_opened:
+            choose_exercise_window = ChooseExerciseWindow(self, self.current_instrument, self.current_exercise, self.current_mode)
+            choose_exercise_window.mainloop()
 
 
 def main():
@@ -147,7 +144,8 @@ def main():
 if __name__ == "__main__":
     main()
 
-# language, password + user - password, user w csv ewentualnie chronione hasłem
-# kalendarzyk może idk
-# rozwiązanie wielokrotnego otwierania pliku csv - trzymać w pamięci i na końcu zapisać
-# validate users_passwords file (?), change password (?)
+# TODO list:
+#  jednolitość języka!!!
+#  kalendarzyk może idk - chyba nie jednak XD
+#  rozwiązanie wielokrotnego otwierania pliku csv - trzymać w pamięci i na końcu zapisać, może baza danych? idk
+#  SKRYPT FFMPEG NA RÓŻNE POZIOMY TRUDNOŚCI, BĘDZIE ON 10 LAT SZEDŁ WIĘC TRZEBA NAPISAĆ DOBRZE

@@ -5,29 +5,38 @@ import pygame
 from pydub.playback import play
 from pydub import AudioSegment
 
-# TODO KOLEJNOSC
-dom_7_options = ['zas', 'kw_sek', 'ter_kw', 'sek']
-triad_options = ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64',
-                 'zmn_z', 'zmn_6', 'zmn_64', 'zwiek']
-interval_options = ['2_m', '2_w', '3_m', '3_w', '4', '4_5_tryt', '5', '6_m', '6_w', '7_m', '7_w', '8']
-
 
 class ExerciseHandler:
-    def __init__(self, instrument, exercise, harmonics, sounds, mode):
+    def __init__(self, instrument, exercise, harmonics, what_to_play, mode):
+        pygame.mixer.init()
+
+        self.instrument = instrument
+        self.exercise = exercise
         self.harmonics = harmonics
         self.mode = mode
         self.instrument = instrument
-        self.sounds = []
+
+        # triads
+        # just have to maintain it in order of the buttons
+        self.full_playlist = ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64', 'zmn_z', 'zmn_6', 'zmn_64', 'zwiek']
+
+        if self.exercise == Exercise.INTERVALS:
+            self.full_playlist = ['2_m', '2_w', '3_m', '3_w', '4', '4_5_tryt', '5', '6_m', '6_w', '7_m', '7_w', '8']
+        elif self.exercise == Exercise.DOMINANT_7TH:
+            self.full_playlist = ['zas', '1_kw_sek', '2_ter_kw', '3_sek']
+
+        # we could use self.current_playlist.index() but it would be slower
+        self.mapping = dict(zip([x for x in range(len(self.full_playlist))], self.full_playlist))
         self.playlist = []
-        self.playlist_ans = []
-        self.exercise = exercise
-        pygame.mixer.init()
-        self.instrument = instrument
-        self.song = None
+
+        for i, sound in enumerate(what_to_play):
+            if sound.get():  # if type of sound is chosen by user
+                self.playlist.append(self.full_playlist[i])
+
         self.sound_type = None
+        self.sound = None
+
         self.path = os.path.join(os.path.dirname(__file__), "../sounds/")
-        for i in range(0, len(sounds), 1):
-            self.sounds.append(sounds[i].get())
 
         if self.mode == mode.EASY:
             self.path += "easy/"
@@ -75,39 +84,36 @@ class ExerciseHandler:
                 self.path += "up_h/"
             else:
                 self.path += "down_h/"
-            for i in range(0, len(self.sounds), 1):
-                if self.sounds[i]:
-                    pass
 
     def check_accuracy_outer(self, num):
         return lambda: self.check_accuracy(num)
 
     def check_accuracy(self, num):
-        if self.song is None:
-            return
+        if self.sound is not None:
+            res = "WRONG!"
 
-        names_tab = triad_options
-        if self.exercise == Exercise.INTERVALS:
-            names_tab = interval_options
-        elif self.exercise == Exercise.DOMINANT_7TH:
-            names_tab = dom_7_options
+            # self.current_playlist_dict[self.sound_type] == num
+            if self.mapping[num] == self.sound_type:
+                res = "CORRECT!"
 
-        res = "WRONG!"
+            print("You chose", self.mapping[num])
+            print("It was", self.sound_type)
+            print(res)
 
-        if names_tab.index(self.sound_type) == num:
-            res = "CORRECT!"
-
-        print(res)
+            self.sound = None
 
     def next_sound(self):
-        self.sound_type = random.choice(os.listdir(self.path))
-        self.song = self.path + self.sound_type + '/' + random.choice(os.listdir(self.path + self.sound_type))
-        print(self.song)
-        pygame.mixer.music.load(self.song)
+        # TODO: zapisywanie statystyk do pliku, prob zrobimy jakiś file handler, żeby tam raz to zapisane miał,
+        #  to się będzie edytować tam gdzie trzeba i potem jakoś na końcu zapisywać do pliku, a na początku wczytywać
+        #  niby można bazę danych lokalną zrobić i pliki bazodanowe załączyć, ale czy to ma sens przy tym rozmiarze aplikacji?
+        #  wątpię, ale jak Ci się chce to możesz
+        self.sound_type = random.choice(self.playlist)
+        self.sound = self.path + self.sound_type + '/' + random.choice(os.listdir(self.path + self.sound_type))
+        print(self.sound)
+        pygame.mixer.music.load(self.sound)
         pygame.mixer.music.play(loops=0)
 
     def repeat_sound(self):
-        if self.song is None:
-            return
-        pygame.mixer.music.load(self.song)
-        pygame.mixer.music.play(loops=0)
+        if self.sound is not None:
+            pygame.mixer.music.load(self.sound)
+            pygame.mixer.music.play(loops=0)

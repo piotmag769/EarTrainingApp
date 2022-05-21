@@ -23,8 +23,8 @@ class BaseWindow(tk.Toplevel):
         super().destroy()
 
     def set_opened(self, val):
-        if type(self).__name__ == "ExerciseWindow":
-            self.master_root.exercise_opened = val
+        if type(self).__name__ == "ChooseExerciseWindow":
+            self.master_root.choose_exercise_opened = val
         elif type(self).__name__ == "ImprovementWindow":
             self.master_root.improvement_opened = val
         elif type(self).__name__ == "InfoWindow":
@@ -35,3 +35,5 @@ class BaseWindow(tk.Toplevel):
             self.master_root.statistics_opened = val
         elif type(self).__name__ == "CreateAccountWindow":
             self.master_root.create_account_opened = val
+        elif type(self).__name__ == "ExerciseWindow":
+            self.master_root.exercise_window_opened = val
