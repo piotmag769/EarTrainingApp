@@ -146,6 +146,6 @@ if __name__ == "__main__":
 
 # TODO list:
 #  jednolitość języka!!!
-#  kalendarzyk może idk - chyba nie jednak XD
+#  streak, top scores, areas to improve (improve)
 #  rozwiązanie wielokrotnego otwierania pliku csv - trzymać w pamięci i na końcu zapisać, może baza danych? idk
 #  SKRYPT FFMPEG NA RÓŻNE POZIOMY TRUDNOŚCI, BĘDZIE ON 10 LAT SZEDŁ WIĘC TRZEBA NAPISAĆ DOBRZE
