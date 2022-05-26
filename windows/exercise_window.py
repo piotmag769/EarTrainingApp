@@ -10,6 +10,10 @@ class ExerciseWindow(BaseWindow):
         self.exercise_handler = ExerciseHandler(self, instrument, exercise, harmonics, what_to_play, mode)
         buttons_list = []
 
+        self.correctness_label = tk.Label(self, font=('Comic Sans MS', 10, 'bold'))
+        self.correctness_label.place(x = 100, y = 600)
+
+
         j = 0
         for i in range(len(names)):
             if what_to_play[i].get():

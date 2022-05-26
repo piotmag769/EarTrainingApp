@@ -19,8 +19,11 @@ class BaseWindow(tk.Toplevel):
         self.geometry("+%d+%d" % (x, y))
 
     def destroy(self):
+        if type(self).__name__ == "ExerciseWindow":
+            self.exercise_handler.destroy()
         self.set_opened(False)
         super().destroy()
+
 
     def set_opened(self, val):
         if type(self).__name__ == "ChooseExerciseWindow":
