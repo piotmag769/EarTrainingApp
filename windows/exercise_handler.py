@@ -4,12 +4,17 @@ import os
 import pygame
 from pydub.playback import play
 from pydub import AudioSegment
+import sqlite3
 
 
 class ExerciseHandler:
-    def __init__(self, instrument, exercise, harmonics, what_to_play, mode):
+    def __init__(self, master_root, instrument, exercise, harmonics, what_to_play, mode):
         pygame.mixer.init()
 
+        database_path = os.path.join(os.path.dirname(__file__), "../main_database")
+        con = sqlite3.connect(database_path)
+        self.cursor = con.cursor()
+        self.logged_user = master_root.master_root.master_root.logged_user
         self.instrument = instrument
         self.exercise = exercise
         self.harmonics = harmonics
@@ -95,6 +100,12 @@ class ExerciseHandler:
             # self.current_playlist_dict[self.sound_type] == num
             if self.mapping[num] == self.sound_type:
                 res = "CORRECT!"
+                self.cursor.execute("INSERT INTO Users(username, password) VALUES('Dorota', 'dorot')")
+                self.cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES(?, ?)", (str(self.exercise), str(self.sound_type)))
+                self.cursor.execute("INSERT INTO Scores(all_tries, correct_tries, username, instrument, mode, ex_type) VALUES(10, 10, ?, ?, ?, ?)", (str(self.logged_user), str(self.instrument), str(self.mode), str(self.exercise)))
+
+            else:
+                pass
 
             print("You chose", self.mapping[num])
             print("It was", self.sound_type)

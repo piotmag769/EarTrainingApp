@@ -7,7 +7,7 @@ class ExerciseWindow(BaseWindow):
     def __init__(self, master_root, width, height, title, instrument, exercise, names, harmonics, what_to_play, mode):
         super().__init__(master_root, width, height, title)
 
-        self.exercise_handler = ExerciseHandler(instrument, exercise, harmonics, what_to_play, mode)
+        self.exercise_handler = ExerciseHandler(self, instrument, exercise, harmonics, what_to_play, mode)
         buttons_list = []
 
         j = 0
