@@ -2,8 +2,6 @@ from enum_types import Instrument, Mode, Exercise
 import random
 import os
 import pygame
-from pydub.playback import play
-from pydub import AudioSegment
 import sqlite3
 
 

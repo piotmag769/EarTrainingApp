@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="main_database" uuid="c7ae3bae-94d7-42cd-95f4-131e10730780">
+    <data-source source="LOCAL" name="main_database" uuid="515671f2-148a-48ab-824d-649f6bd55b67">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\dorot\Documents\STUDIA_materialy\SEMESTR4\Python\projekt\EarTrainingApp\main_database</jdbc-url>
+      <jdbc-url>jdbc:sqlite:D:\Piotrek\Studia\AGH\Semestr 4\Python\EarTrainingApp\main_database</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.36.0.3/sqlite-jdbc-3.36.0.3.jar</url>
