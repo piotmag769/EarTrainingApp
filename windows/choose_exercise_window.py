@@ -110,3 +110,6 @@ class ChooseExerciseWindow(BaseWindow):
                                              self.exercise_used, self.names, self.variable.get(), self.what_to_play,
                                              self.mode_used)
             exercise_window.mainloop()
+
+    def set_opened(self, val):
+        self.master_root.choose_exercise_opened = val

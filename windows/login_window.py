@@ -1,12 +1,18 @@
+import os
+import sqlite3
 import tkinter as tk
 from .base_window import BaseWindow
 from .create_account_window import CreateAccountWindow
-import csv
+# import csv
 
 
 class LoginWindow(BaseWindow):
     def __init__(self, master_root):
         super().__init__(master_root, 500, 380, "Log in")
+
+        database_path = os.path.join(os.path.dirname(__file__), "../main_database")
+        self.con = sqlite3.connect(database_path)
+        self.cursor = self.con.cursor()
 
         self.create_account_opened = False
 
@@ -78,29 +84,59 @@ class LoginWindow(BaseWindow):
         self.password_input.delete(0, len(password))
         self.username_input.delete(0, len(username))
 
-        user_exists = False
-        correct_password = False
-        with open('users_passwords.csv', 'r') as csvfile:
-            csv_reader = csv.reader(csvfile, delimiter=',')
-            for row in csv_reader:
-                if row[0] == username:
-                    user_exists = True
-                    if password == row[1]:
-                        correct_password = True
-                    break
+        self.cursor.execute("SELECT password FROM Users WHERE username=(?)", (username, ))
+        next_id = self.cursor.fetchall()
 
-        if not user_exists:
+        if not next_id:
             self.login_label['text'] = "Invalid username!"
             self.login_label.place(x=180, y=210)
-        elif not correct_password:
+        elif not next_id[0][0] == password:
             self.login_label['text'] = "Invalid password!"
             self.login_label.place(x=180, y=210)
         else:
-            # self.login_label['text'] = "Logged in successfully!"
-            # self.login_label.place(x=160, y=210)
             self.master_root.log_in_button['text'] = "Log out"
             self.master_root.log_in_button['command'] = self.master_root.log_out
             self.master_root.logged_label['text'] = "Hi, " + username + "!"
             self.master_root.logged_user = username
             self.destroy()
 
+    def set_opened(self, val):
+        self.master_root.login_opened = val
+
+    def destroy(self):
+        self.con.commit()
+        self.cursor.close()
+        super().destroy()
+
+    # OLD VERSION
+    # def log_in(self, username, password):
+    #     self.login_label.place_forget()
+    #
+    #     self.password_input.delete(0, len(password))
+    #     self.username_input.delete(0, len(username))
+    #
+    #     user_exists = False
+    #     correct_password = False
+    #     with open('users_passwords.csv', 'r') as csvfile:
+    #         csv_reader = csv.reader(csvfile, delimiter=',')
+    #         for row in csv_reader:
+    #             if row[0] == username:
+    #                 user_exists = True
+    #                 if password == row[1]:
+    #                     correct_password = True
+    #                 break
+    #
+    #     if not user_exists:
+    #         self.login_label['text'] = "Invalid username!"
+    #         self.login_label.place(x=180, y=210)
+    #     elif not correct_password:
+    #         self.login_label['text'] = "Invalid password!"
+    #         self.login_label.place(x=180, y=210)
+    #     else:
+    #         # self.login_label['text'] = "Logged in successfully!"
+    #         # self.login_label.place(x=160, y=210)
+    #         self.master_root.log_in_button['text'] = "Log out"
+    #         self.master_root.log_in_button['command'] = self.master_root.log_out
+    #         self.master_root.logged_label['text'] = "Hi, " + username + "!"
+    #         self.master_root.logged_user = username
+    #         self.destroy()

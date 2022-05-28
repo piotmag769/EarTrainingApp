@@ -1,11 +1,17 @@
+import os
+import sqlite3
 import tkinter as tk
-import csv
+# import csv
 from .base_window import BaseWindow
 
 
 class CreateAccountWindow(BaseWindow):
     def __init__(self, master_root):
         super().__init__(master_root, 420, 250, "Create new account")
+
+        database_path = os.path.join(os.path.dirname(__file__), "../main_database")
+        self.con = sqlite3.connect(database_path)
+        self.cursor = self.con.cursor()
 
         self.username_label = tk.Label(
             self,
@@ -60,29 +66,62 @@ class CreateAccountWindow(BaseWindow):
             self.warning_label['text'] = "No username provided!"
             self.warning_label.place(x=100, y=200)
         else:
-            user_exists = False
-            with open('users_passwords.csv', 'r') as csvfile:
-                csv_reader = csv.reader(csvfile, delimiter=',')
-                for row in csv_reader:
-                    if row[0] == username:
-                        user_exists = True
-                        break
+            self.cursor.execute("SELECT username FROM Users WHERE username=(?)", (username,))
+            next_id = self.cursor.fetchall()
 
-            if user_exists:
+            if next_id:
                 self.warning_label['text'] = "Username already exists!"
                 self.warning_label.place(x=90, y=200)
-
             elif len(password) < 5:
                 self.warning_label['text'] = "Your password is too short!"
                 self.warning_label.place(x=90, y=200)
                 self.password_input.delete(0, len(password))
-
             else:
-                with open('users_passwords.csv', 'a', newline='\n') as csvfile:
-                    csv_writer = csv.writer(csvfile, delimiter=',')
-                    csv_writer.writerow([username, password])
-                    self.warning_label['text'] = "Account created successfully!"
-                    self.warning_label.place(x=85, y=200)
+                self.cursor.execute("INSERT INTO Users(username, password) VALUES(?, ?)", (username, password))
+                self.warning_label['text'] = "Account created successfully!"
+                self.warning_label.place(x=85, y=200)
 
         self.password_input.delete(0, len(password))
         self.username_input.delete(0, len(username))
+
+    def set_opened(self, val):
+        self.master_root.create_account_opened = val
+
+    def destroy(self):
+        self.con.commit()
+        self.cursor.close()
+        super().destroy()
+
+    # OLD VERSION
+    # def create_new_account(self, username, password):
+    #     self.warning_label.place_forget()
+    #
+    #     if len(username) == 0:
+    #         self.warning_label['text'] = "No username provided!"
+    #         self.warning_label.place(x=100, y=200)
+    #     else:
+    #         user_exists = False
+    #         with open('users_passwords.csv', 'r') as csvfile:
+    #             csv_reader = csv.reader(csvfile, delimiter=',')
+    #             for row in csv_reader:
+    #                 if row[0] == username:
+    #                     user_exists = True
+    #                     break
+    #
+    #         if user_exists:
+    #             self.warning_label['text'] = "Username already exists!"
+    #             self.warning_label.place(x=90, y=200)
+    #
+    #         elif len(password) < 5:
+    #             self.warning_label['text'] = "Your password is too short!"
+    #             self.warning_label.place(x=90, y=200)
+    #             self.password_input.delete(0, len(password))
+    #         else:
+    #             with open('users_passwords.csv', 'a', newline='\n') as csvfile:
+    #                 csv_writer = csv.writer(csvfile, delimiter=',')
+    #                 csv_writer.writerow([username, password])
+    #                 self.warning_label['text'] = "Account created successfully!"
+    #                 self.warning_label.place(x=85, y=200)
+    #
+    #     self.password_input.delete(0, len(password))
+    #     self.username_input.delete(0, len(username))

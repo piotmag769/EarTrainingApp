@@ -13,6 +13,7 @@ class ExerciseHandler:
         database_path = os.path.join(os.path.dirname(__file__), "../main_database")
         self.con = sqlite3.connect(database_path)
         self.cursor = self.con.cursor()
+
         self.logged_user = master_root.master_root.master_root.logged_user
         self.instrument = instrument
         self.exercise = exercise
@@ -23,7 +24,8 @@ class ExerciseHandler:
 
         # triads
         # just have to maintain it in order of the buttons
-        self.full_playlist = ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64', 'zmn_z', 'zmn_6', 'zmn_64', 'zwiek']
+        self.full_playlist = ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64', 'zmn_z', 'zmn_6', 'zmn_64',
+                              'zwiek']
 
         if self.exercise == Exercise.INTERVALS:
             self.full_playlist = ['2_m', '2_w', '3_m', '3_w', '4', '4_5_tryt', '5', '6_m', '6_w', '7_m', '7_w', '8']
@@ -93,31 +95,25 @@ class ExerciseHandler:
     def check_accuracy_outer(self, num):
         return lambda: self.check_accuracy(num)
 
-
     def check_accuracy(self, num):
         if self.sound is not None:
-            res = "WRONG!"
             self.cursor.execute("SELECT ex_id FROM Scores ORDER BY ex_id desc LIMIT 1")
             next_id = self.cursor.fetchall()
-            if not (next_id):
-                next_id = 0
-            else:
-                next_id = next_id[0][0]
+            next_id = 0 if not next_id else next_id[0][0]
 
-            # self.current_playlist_dict[self.sound_type] == num
+            is_correct = 0
+            res = "WRONG!"
             if self.mapping[num] == self.sound_type:
                 res = "CORRECT!"
-                self.master_root.correctness_label["text"] = "DOBRZE!"
-                if self.logged_user != None:
-                    self.cursor.execute("INSERT INTO Scores(ex_id, is_correct, username, instrument, mode, ex_type, done_date) VALUES(?, ?, ?, ?, ?, ?, ?)", (next_id + 1, 1, self.logged_user, self.instrument.name, self.mode.name, str(self.sound_type), str(datetime.date(datetime.now()))))
+                is_correct = 1
 
-            else:
-                self.master_root.correctness_label["text"] = "Źle :("
-                if self.logged_user != None:
-                    self.cursor.execute(
+            if self.logged_user is not None:
+                self.cursor.execute(
                     "INSERT INTO Scores(ex_id, is_correct, username, instrument, mode, ex_type, done_date) VALUES(?, ?, ?, ?, ?, ?, ?)",
-                        (next_id + 1, 0, self.logged_user, self.instrument.name, self.mode.name, str(self.sound_type),
-                         str(datetime.date(datetime.now()))))
+                    (next_id + 1, is_correct, self.logged_user, self.instrument.name, self.mode.name, self.sound_type,
+                     str(datetime.date(datetime.now()))))
+
+            self.master_root.correctness_label["text"] = res
 
             print("You chose", self.mapping[num])
             print("It was", self.sound_type)
@@ -126,10 +122,6 @@ class ExerciseHandler:
             self.sound = None
 
     def next_sound(self):
-        # TODO: zapisywanie statystyk do pliku, prob zrobimy jakiś file handler, żeby tam raz to zapisane miał,
-        #  to się będzie edytować tam gdzie trzeba i potem jakoś na końcu zapisywać do pliku, a na początku wczytywać
-        #  niby można bazę danych lokalną zrobić i pliki bazodanowe załączyć, ale czy to ma sens przy tym rozmiarze aplikacji?
-        #  wątpię, ale jak Ci się chce to możesz
         self.master_root.correctness_label["text"] = ""
         self.sound_type = random.choice(self.playlist)
         self.sound = self.path + self.sound_type + '/' + random.choice(os.listdir(self.path + self.sound_type))
@@ -146,4 +138,3 @@ class ExerciseHandler:
     def destroy(self):
         self.con.commit()
         self.cursor.close()
-

@@ -19,24 +19,9 @@ class BaseWindow(tk.Toplevel):
         self.geometry("+%d+%d" % (x, y))
 
     def destroy(self):
-        if type(self).__name__ == "ExerciseWindow":
-            self.exercise_handler.destroy()
         self.set_opened(False)
         super().destroy()
 
-
+    # virtual method
     def set_opened(self, val):
-        if type(self).__name__ == "ChooseExerciseWindow":
-            self.master_root.choose_exercise_opened = val
-        elif type(self).__name__ == "ImprovementWindow":
-            self.master_root.improvement_opened = val
-        elif type(self).__name__ == "InfoWindow":
-            self.master_root.info_opened = val
-        elif type(self).__name__ == "LoginWindow":
-            self.master_root.login_opened = val
-        elif type(self).__name__ == "StatisticsWindow":
-            self.master_root.statistics_opened = val
-        elif type(self).__name__ == "CreateAccountWindow":
-            self.master_root.create_account_opened = val
-        elif type(self).__name__ == "ExerciseWindow":
-            self.master_root.exercise_window_opened = val
+        pass
