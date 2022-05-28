@@ -146,7 +146,7 @@ if __name__ == "__main__":
 
 # TODO list:
 #  jednolitość języka!!!
-#  SKRYPT FFMPEG NA RÓŻNE POZIOMY TRUDNOŚCI, BĘDZIE ON 10 LAT SZEDŁ WIĘC TRZEBA NAPISAĆ DOBRZE
 #  na teraz:
 #  - żeby się nie dało logować jak inne okno otwarte
-#  - streak, top scores, areas to improve (improve)
+#  - streak, top scores, statistics, areas to improve (improve)
+#  - ffmpeg + nagrania - pianino i trąbka

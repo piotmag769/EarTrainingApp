@@ -1,21 +1,18 @@
-import os
+# IMPORTANT!!! this is ffmpeg-python package, not ffmpeg, install it with
+# pip install ffmpeg-python
+
+# original ffmpeg is required to use this package tho - install it with
+# sudo apt-get update
+# sudo apt install ffmpeg
 import ffmpeg
 import sys
+import os
 
 sys.path.append("..")
 
-# stream = ffmpeg.input('input.mp4')
-# (
-#     ffmpeg
-#     .input('D:\\Piotrek\\Studia\\AGH\\Semestr 4\\Python\\EarTrainingApp\\sounds\\easy\\guitar\\dom_7\\down\\1_kw_sek\\D-ks-1-d.wav')
-#     .filter('a', 'atempo:0.5')
-#     .output('output.mp4')
-#     .run()
-# )
-
 instruments = ['guitar']  # 'piano', 'trumpet'
 modes = ['medium', 'hard']
-tempo_mod = [0.5, 0.25]
+tempo_mods = [2.0, 3.5]
 
 ex_types = ['dom_7', 'int', 'triads']
 
@@ -32,7 +29,7 @@ all_options = [
 ]
 
 i = 0
-for mode in modes:
+for mode, tempo_mod in zip(modes, tempo_mods):
     os.mkdir("../sounds/" + mode)
     for instrument in instruments:
         os.mkdir("../sounds/" + mode + '/' + instrument)
@@ -41,12 +38,17 @@ for mode in modes:
             for option in options:
                 os.mkdir("../sounds/" + mode + '/' + instrument + '/' + ex_type + '/' + option)
                 for ex in playlist:
-                    os.mkdir("../sounds/" + mode + '/' + instrument + '/' + ex_type + '/' + option + '/' + ex)
-                    i += 1
+                    curr_path = "../sounds/" + mode + '/' + instrument + '/' + ex_type + '/' + option + '/' + ex
+                    easy_path = "../sounds/easy/" + instrument + '/' + ex_type + '/' + option + '/' + ex
+                    os.mkdir(curr_path)
+                    for file in os.listdir("../sounds/easy/" + instrument + '/' + ex_type + '/' + option + '/' + ex):
+                        (
+                            ffmpeg
+                            .input(easy_path + '/' + file)
+                            .filter('atempo', tempo_mod)
+                            .output(curr_path + '/' + file)
+                            .run()
+                        )
+                        i += 1
 
 print(i)
-
-# for mode in modes:
-#     for instrument in instruments:
-#         for folder in os.listdir("../sounds/easy/" + instrument):
-#             print(folder)

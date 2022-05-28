@@ -5,12 +5,6 @@ from enum_types import Instrument, Exercise
 from .base_window import BaseWindow
 
 
-# import sys
-#
-# sys.path.append("..")
-# TODO: seems like not needed, idk
-
-
 class ChooseExerciseWindow(BaseWindow):
     def __init__(self, master_root, instrument, exercise, mode):
         super().__init__(master_root, 850, 700, "Exercise")
