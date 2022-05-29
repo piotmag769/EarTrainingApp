@@ -7,7 +7,7 @@ from .base_window import BaseWindow
 
 class ChooseExerciseWindow(BaseWindow):
     def __init__(self, master_root, instrument, exercise, mode):
-        super().__init__(master_root, 850, 700, "Exercise")
+        super().__init__(master_root, 850, 700, "Choose exercise")
         self.instrument_used = instrument
         self.exercise_used = exercise
         self.mode_used = mode
@@ -107,3 +107,7 @@ class ChooseExerciseWindow(BaseWindow):
 
     def set_opened(self, val):
         self.master_root.choose_exercise_opened = val
+
+    def destroy(self):
+        self.master_root.log_in_button['state'] = tk.NORMAL
+        super().destroy()

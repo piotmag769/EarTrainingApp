@@ -106,6 +106,7 @@ class LoginWindow(BaseWindow):
     def destroy(self):
         self.con.commit()
         self.cursor.close()
+        self.master_root.start_button['state'] = tk.NORMAL
         super().destroy()
 
     # OLD VERSION

@@ -1,4 +1,6 @@
 import tkinter as tk
+
+from enum_types import Exercise
 from .base_window import BaseWindow
 from .exercise_handler import ExerciseHandler
 
@@ -11,16 +13,17 @@ class ExerciseWindow(BaseWindow):
         buttons_list = []
 
         self.correctness_label = tk.Label(self, font=('Comic Sans MS', 10, 'bold'))
-        self.correctness_label.place(x = 100, y = 600)
+        self.correctness_label.place(x=100, y=600)
 
         j = 0
+        width = 15 if exercise != Exercise.TRIADS else 20
         for i in range(len(names)):
             if what_to_play[i].get():
                 buttons_list.append(tk.Button(
                     self,
                     bg="blue",
                     fg="white",
-                    width=15,
+                    width=width,
                     text=names[i],
                     font=('Comic Sans MS', 10, 'bold'),
                     command=self.exercise_handler.check_accuracy_outer(i)

@@ -119,6 +119,7 @@ class App(tk.Tk):
     def open_login_window(self):
         if not self.login_opened:
             login_window = LoginWindow(self)
+            self.start_button['state'] = tk.DISABLED
             login_window.mainloop()
 
     def open_improvement_window(self):
@@ -133,7 +134,9 @@ class App(tk.Tk):
 
     def open_exercise_window(self):
         if not self.choose_exercise_opened:
-            choose_exercise_window = ChooseExerciseWindow(self, self.current_instrument, self.current_exercise, self.current_mode)
+            choose_exercise_window = ChooseExerciseWindow(self, self.current_instrument, self.current_exercise,
+                                                          self.current_mode)
+            self.log_in_button['state'] = tk.DISABLED
             choose_exercise_window.mainloop()
 
 
@@ -145,8 +148,11 @@ if __name__ == "__main__":
     main()
 
 # TODO list:
-#  jednolitość języka!!!
-#  na teraz:
-#  - żeby się nie dało logować jak inne okno otwarte
-#  - streak, top scores, statistics, areas to improve (improve)
+#  - streak, top scores (!!!)
+#  - statistics, areas to improve (improve) (!!!)
+
+# TODO poboczne:
 #  - ffmpeg + nagrania - pianino i trąbka
+#  - info window
+#  - jednolitość języka
+#  - delay przy centrowaniu okna (?) - chyba nie da się nic z tym zrobić
