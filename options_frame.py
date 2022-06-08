@@ -109,7 +109,7 @@ class OptionsFrame(tk.Frame):
 
         self.instrument_label = tk.Label(
             self,
-            text="Instrument picked: PIANO",
+            text="Instrument picked: GUITAR",
             font=instr_ex_mode_logged_font,
         )
 

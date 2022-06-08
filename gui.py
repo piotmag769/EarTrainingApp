@@ -6,8 +6,10 @@ from windows.choose_exercise_window import ChooseExerciseWindow
 from windows.improvement_window import ImprovementWindow
 from windows.info_window import InfoWindow
 from windows.statistics_window import StatisticsWindow
+from windows.top_scores_window import TopScoresWindow
 
 from enum_types import Instrument, Mode, Exercise
+
 
 
 class App(tk.Tk):
@@ -19,7 +21,7 @@ class App(tk.Tk):
         self.wm_resizable(False, False)
 
         self.current_mode = Mode.EASY
-        self.current_instrument = Instrument.PIANO
+        self.current_instrument = Instrument.GUITAR
         self.current_exercise = Exercise.INTERVALS
 
         self.choose_exercise_opened = False
@@ -27,6 +29,7 @@ class App(tk.Tk):
         self.info_opened = False
         self.improvement_opened = False
         self.statistics_opened = False
+        self.top_scores_opened = False
 
         self.logged_user = None
 
@@ -91,14 +94,25 @@ class App(tk.Tk):
             command=self.open_improvement_window
         )
 
+        self.top_scores_button = tk.Button(
+            self,
+            bg="blue",
+            fg="white",
+            width=16,
+            text="Top Scores",
+            font=button_font,
+            command=self.open_top_scores_window
+        )
+
         self.info_button.place(x=320, y=15)
         self.logged_label.place(x=420, y=75, anchor="center")
         self.log_in_button.place(x=350, y=100)
         self.start_button.place(x=350, y=500)
         self.statistics_button.place(x=50, y=550)
         self.improve_button.place(x=670, y=550)
+        self.top_scores_button.place(x=345, y=550)
 
-        self.update_idletasks()  # Update "requested size" from geometry manager
+        self.update_idletasks()  # update "requested size" from geometry manager
 
         x = (self.winfo_screenwidth() - 850) / 2
         y = (self.winfo_screenheight() - 700) / 2
@@ -132,6 +146,11 @@ class App(tk.Tk):
             statistics_window = StatisticsWindow(self)
             statistics_window.mainloop()
 
+    def open_top_scores_window(self):
+        if not self.top_scores_opened:
+            top_scores_window = TopScoresWindow(self)
+            top_scores_window.mainloop()
+
     def open_exercise_window(self):
         if not self.choose_exercise_opened:
             choose_exercise_window = ChooseExerciseWindow(self, self.current_instrument, self.current_exercise,
@@ -148,11 +167,6 @@ if __name__ == "__main__":
     main()
 
 # TODO list:
-#  - streak, top scores (!!!)
+#  - top scores (!!!)
 #  - statistics, areas to improve (improve) (!!!)
-
-# TODO poboczne:
-#  - ffmpeg + nagrania - pianino i trąbka
 #  - info window
-#  - jednolitość języka
-#  - delay przy centrowaniu okna (?) - chyba nie da się nic z tym zrobić
