@@ -1,15 +1,13 @@
 import tkinter as tk
 
+from enum_types import Instrument, Mode, Exercise
 from options_frame import OptionsFrame
-from windows.login_window import LoginWindow
 from windows.choose_exercise_window import ChooseExerciseWindow
 from windows.improvement_window import ImprovementWindow
 from windows.info_window import InfoWindow
+from windows.login_window import LoginWindow
 from windows.statistics_window import StatisticsWindow
 from windows.top_scores_window import TopScoresWindow
-
-from enum_types import Instrument, Mode, Exercise
-
 
 
 class App(tk.Tk):
@@ -165,7 +163,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# TODO list:
-#  - top scores (!!!)
-#  - info window

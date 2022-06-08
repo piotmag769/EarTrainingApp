@@ -1,8 +1,11 @@
 import os
 import sqlite3
 import tkinter as tk
+
 from .base_window import BaseWindow
 from .create_account_window import CreateAccountWindow
+
+
 # import csv
 
 
@@ -84,7 +87,7 @@ class LoginWindow(BaseWindow):
         self.password_input.delete(0, len(password))
         self.username_input.delete(0, len(username))
 
-        self.cursor.execute("SELECT password FROM Users WHERE username=(?)", (username, ))
+        self.cursor.execute("SELECT password FROM Users WHERE username=(?)", (username,))
         next_id = self.cursor.fetchall()
 
         if not next_id:

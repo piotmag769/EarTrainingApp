@@ -1,8 +1,9 @@
 import os
 import sqlite3
 import tkinter as tk
-from .base_window import BaseWindow
+
 from enum_types import Exercise
+from .base_window import BaseWindow
 
 
 class TopScoresWindow(BaseWindow):
@@ -36,7 +37,7 @@ class TopScoresWindow(BaseWindow):
             "GROUP BY username "
             "ORDER BY score DESC "
             "LIMIT 3",
-            (exercise.name, )
+            (exercise.name,)
         )
 
         return cursor.fetchall()

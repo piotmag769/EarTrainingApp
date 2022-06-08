@@ -1,13 +1,14 @@
+# import pandas as pd
+import datetime
 import os
 import sqlite3
 import tkinter as tk
-# import pandas as pd
-import datetime
+
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from enum_types import Exercise
 from .base_window import BaseWindow
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 class StatisticsWindow(BaseWindow):
@@ -21,7 +22,7 @@ class StatisticsWindow(BaseWindow):
         fig = plt.figure()
         axis = fig.add_subplot(111)
         exercises = ["Intervals", "Dominants 7th", "Triads"]
-        avgs = [100*self.average_exercise_score(x, cursor) for x in Exercise]
+        avgs = [100 * self.average_exercise_score(x, cursor) for x in Exercise]
 
         axis.bar(exercises, avgs)
 
@@ -51,7 +52,7 @@ class StatisticsWindow(BaseWindow):
             "SELECT distinct done_date from Scores S "
             "INNER JOIN Types T on T.ex_type = S.ex_type "
             "WHERE username = ?",
-            (self.master_root.logged_user, )
+            (self.master_root.logged_user,)
         )
 
         select_res = cursor.fetchall()
@@ -85,7 +86,7 @@ class StatisticsWindow(BaseWindow):
         )
 
         select_res = cursor.fetchall()
-        return select_res[0][1]/select_res[0][0] if select_res else 0
+        return select_res[0][1] / select_res[0][0] if select_res else 0
 
     def set_opened(self, val):
         self.master_root.statistics_opened = val

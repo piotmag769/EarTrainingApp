@@ -1,9 +1,11 @@
-from enum_types import Instrument, Mode, Exercise
-import random
 import os
-import pygame
+import random
 import sqlite3
 from datetime import datetime
+
+import pygame
+
+from enum_types import Instrument, Exercise
 
 
 class ExerciseHandler:

@@ -1,8 +1,8 @@
 import tkinter as tk
 
-from .exercise_window import ExerciseWindow
 from enum_types import Instrument, Exercise
 from .base_window import BaseWindow
+from .exercise_window import ExerciseWindow
 
 
 class ChooseExerciseWindow(BaseWindow):
@@ -98,7 +98,7 @@ class ChooseExerciseWindow(BaseWindow):
         start_button.place(x=350, y=630)
 
     def start_exercising(self):
-        # nie odpalaj jak jest wybrane 0 lub 1 typów do ćwiczenia, bo bez sensu
+        # doesn't make sense to start with 1 or 0 exercises chosen
         if not self.exercise_window_opened and sum(map(lambda x: x.get() is True, self.what_to_play)) > 1:
             exercise_window = ExerciseWindow(self, 850, 700, "Ćwiczenie", self.instrument_used,
                                              self.exercise_used, self.names, self.variable.get(), self.what_to_play,

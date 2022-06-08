@@ -2,9 +2,9 @@ import os
 import sqlite3
 import tkinter as tk
 from tkinter import ttk
-import pandas as pd
-from .base_window import BaseWindow
+
 from enum_types import Exercise
+from .base_window import BaseWindow
 
 
 class ImprovementWindow(BaseWindow):
@@ -75,8 +75,8 @@ class ImprovementWindow(BaseWindow):
         worst = [None, float('inf')]
 
         for name, all_tries, correct_tries in select_res:
-            if correct_tries/all_tries < worst[1]:
-                worst[0], worst[1] = name, correct_tries/all_tries
+            if correct_tries / all_tries < worst[1]:
+                worst[0], worst[1] = name, correct_tries / all_tries
 
         return worst
 

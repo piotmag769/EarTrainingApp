@@ -1,12 +1,13 @@
 # IMPORTANT!!! this is ffmpeg-python package, not ffmpeg, install it with
 # pip install ffmpeg-python
 
+import os
+import sys
+
 # original ffmpeg is required to use this package tho - install it with
 # sudo apt-get update
 # sudo apt install ffmpeg
 import ffmpeg
-import sys
-import os
 
 sys.path.append("..")
 

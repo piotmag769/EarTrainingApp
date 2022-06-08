@@ -49,7 +49,6 @@ cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('INTERVALS', '7
 cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('INTERVALS', '7_w')")
 cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('INTERVALS', '8')")
 
-
 cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('TRIADS', 'dur_z')")
 cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('TRIADS', 'dur_6')")
 cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('TRIADS', 'dur_64')")
@@ -68,4 +67,3 @@ cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('DOMINANT_7TH',
 
 connector.commit()
 cursor.close()
-

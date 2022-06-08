@@ -1,4 +1,3 @@
-import tkinter as tk
 from .base_window import BaseWindow
 
 
