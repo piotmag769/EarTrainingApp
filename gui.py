@@ -168,5 +168,4 @@ if __name__ == "__main__":
 
 # TODO list:
 #  - top scores (!!!)
-#  - statistics, areas to improve (improve) (!!!)
 #  - info window
