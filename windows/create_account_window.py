@@ -11,8 +11,8 @@ class CreateAccountWindow(BaseWindow):
         super().__init__(master_root, 420, 250, "Create new account")
 
         database_path = os.path.join(os.path.dirname(__file__), "../main_database")
-        self.con = sqlite3.connect(database_path)
-        self.cursor = self.con.cursor()
+        self.connection = sqlite3.connect(database_path)
+        self.cursor = self.connection.cursor()
 
         self.username_label = tk.Label(
             self,
@@ -89,7 +89,7 @@ class CreateAccountWindow(BaseWindow):
         self.master_root.create_account_opened = val
 
     def destroy(self):
-        self.con.commit()
+        self.connection.commit()
         self.cursor.close()
         super().destroy()
 

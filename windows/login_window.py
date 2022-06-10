@@ -14,8 +14,8 @@ class LoginWindow(BaseWindow):
         super().__init__(master_root, 500, 380, "Log in")
 
         database_path = os.path.join(os.path.dirname(__file__), "../main_database")
-        self.con = sqlite3.connect(database_path)
-        self.cursor = self.con.cursor()
+        self.connection = sqlite3.connect(database_path)
+        self.cursor = self.connection.cursor()
 
         self.create_account_opened = False
 
@@ -107,7 +107,7 @@ class LoginWindow(BaseWindow):
         self.master_root.login_opened = val
 
     def destroy(self):
-        self.con.commit()
+        self.connection.commit()
         self.cursor.close()
         self.master_root.start_button['state'] = tk.NORMAL
         super().destroy()

@@ -1,7 +1,7 @@
 import os
 import random
 import sqlite3
-from datetime import datetime
+import datetime
 
 import pygame
 
@@ -13,8 +13,8 @@ class ExerciseHandler:
         pygame.mixer.init()
 
         database_path = os.path.join(os.path.dirname(__file__), "../main_database")
-        self.con = sqlite3.connect(database_path)
-        self.cursor = self.con.cursor()
+        self.connection = sqlite3.connect(database_path)
+        self.cursor = self.connection.cursor()
 
         self.logged_user = master_root.master_root.master_root.logged_user
         self.instrument = instrument
@@ -113,14 +113,9 @@ class ExerciseHandler:
                 self.cursor.execute(
                     "INSERT INTO Scores(ex_id, is_correct, username, instrument, mode, ex_type, done_date) VALUES(?, ?, ?, ?, ?, ?, ?)",
                     (next_id + 1, is_correct, self.logged_user, self.instrument.name, self.mode.name, self.sound_type,
-                     str(datetime.date(datetime.now()))))
+                     str(datetime.datetime.date(datetime.datetime.now()))))
 
             self.master_root.correctness_label["text"] = res
-
-            print("You chose", self.mapping[num])
-            print("It was", self.sound_type)
-            print(res)
-
             self.sound = None
 
     def next_sound(self):
@@ -138,5 +133,5 @@ class ExerciseHandler:
             pygame.mixer.music.play(loops=0)
 
     def destroy(self):
-        self.con.commit()
+        self.connection.commit()
         self.cursor.close()

@@ -40,7 +40,6 @@ class ChooseExerciseWindow(BaseWindow):
             *available_harmonics,
         )
 
-        # TODO - idk co tu chciałaś
         self.dropdown['menu'].config(font=('Comic Sans MS', 12, 'bold'))
 
         harmonics_label.place(x=350, y=20)

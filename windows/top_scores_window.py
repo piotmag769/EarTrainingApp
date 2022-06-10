@@ -11,8 +11,8 @@ class TopScoresWindow(BaseWindow):
         super().__init__(master_root, 463, 170, "Top scores")
 
         database_path = os.path.join(os.path.dirname(__file__), "../main_database")
-        con = sqlite3.connect(database_path)
-        cursor = con.cursor()
+        connection = sqlite3.connect(database_path)
+        cursor = connection.cursor()
 
         self.list_boxes = [tk.Listbox(self, font=('Comic Sans MS', 12, 'italic'), width=15) for _ in range(3)]
 

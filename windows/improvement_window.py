@@ -14,8 +14,8 @@ class ImprovementWindow(BaseWindow):
 
     def find_weak_points(self):
         database_path = os.path.join(os.path.dirname(__file__), "../main_database")
-        con = sqlite3.connect(database_path)
-        cursor = con.cursor()
+        connection = sqlite3.connect(database_path)
+        cursor = connection.cursor()
 
         worst_int = self.worst_exercise(Exercise.INTERVALS, cursor)
         worst_dom = self.worst_exercise(Exercise.DOMINANT_7TH, cursor)

@@ -1,7 +1,7 @@
 import sqlite3
 
-connector = sqlite3.connect('../main_database')
-cursor = connector.cursor()
+connection = sqlite3.connect('../main_database')
+cursor = connection.cursor()
 
 cursor.execute('''
         CREATE TABLE IF NOT EXISTS Users(
@@ -65,5 +65,5 @@ cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('DOMINANT_7TH',
 cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('DOMINANT_7TH', '2_ter_kw')")
 cursor.execute("INSERT INTO Types(main_category, ex_type) VALUES('DOMINANT_7TH', '3_sek')")
 
-connector.commit()
+connection.commit()
 cursor.close()

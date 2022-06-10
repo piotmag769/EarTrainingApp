@@ -16,15 +16,15 @@ class StatisticsWindow(BaseWindow):
         super().__init__(master_root, 550, 550, "Statistics")
 
         database_path = os.path.join(os.path.dirname(__file__), "../main_database")
-        con = sqlite3.connect(database_path)
-        cursor = con.cursor()
+        connection = sqlite3.connect(database_path)
+        cursor = connection.cursor()
 
         fig = plt.figure()
         axis = fig.add_subplot(111)
         exercises = ["Intervals", "Dominants 7th", "Triads"]
-        avgs = [100 * self.average_exercise_score(x, cursor) for x in Exercise]
+        average_scores = [100 * self.average_exercise_score(x, cursor) for x in Exercise]
 
-        axis.bar(exercises, avgs)
+        axis.bar(exercises, average_scores)
 
         chart_type = FigureCanvasTkAgg(fig, self)
         chart_type.get_tk_widget().pack()
