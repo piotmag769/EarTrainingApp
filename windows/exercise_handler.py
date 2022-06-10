@@ -1,7 +1,7 @@
+import datetime
 import os
 import random
 import sqlite3
-import datetime
 
 import pygame
 
@@ -28,14 +28,28 @@ class ExerciseHandler:
         # just have to maintain it in order of the buttons
         self.full_playlist = ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64', 'zmn_z', 'zmn_6', 'zmn_64',
                               'zwiek']
-
         if self.exercise == Exercise.INTERVALS:
             self.full_playlist = ['2_m', '2_w', '3_m', '3_w', '4', '4_5_tryt', '5', '6_m', '6_w', '7_m', '7_w', '8']
         elif self.exercise == Exercise.DOMINANT_7TH:
             self.full_playlist = ['zas', '1_kw_sek', '2_ter_kw', '3_sek']
 
+        self.full_exercise_names = ['Sekunda mała 2>', 'Sekundka wielka 2', 'Tercja mała 3>', 'Tercja wielka 3',
+                                    'Kwarta czysta 4', 'Tryton 4</5>', 'Kwinta czysta 5', 'Seksta mała 6>',
+                                    ' Seksta wielka 6',
+                                    'Septyma mała 7', 'Septyma wielka 7<', 'Oktawa']
+        if exercise == Exercise.DOMINANT_7TH:
+            self.full_exercise_names = ['Zasadnicza', 'I przewrót', 'II przewrót', 'III przewrót']
+        elif exercise == Exercise.TRIADS:
+            self.full_exercise_names = ['Durowy zasadniczy', 'Durowy sekstowy', 'Durowy kwartsekstowy',
+                                        'Molowy zasadniczy',
+                                        'Molowy sekstowy', 'Molowy kwartsekstowy', 'Zmniejszony zasadniczy',
+                                        'Zmniejszony sekstowy',
+                                        'Zmniejszony kwartsekstowy', 'Zwiększony kwartsekstowy']
+
         # we could use self.current_playlist.index() but it would be slower
-        self.mapping = dict(zip([x for x in range(len(self.full_playlist))], self.full_playlist))
+        self.mapping_for_button = dict(zip([x for x in range(len(self.full_playlist))], self.full_playlist))
+        # mapping for user, when their answer is wrong
+        self.mapping_for_user = dict(zip(self.full_playlist, self.full_exercise_names))
         self.playlist = []
 
         for i, sound in enumerate(what_to_play):
@@ -105,7 +119,7 @@ class ExerciseHandler:
 
             is_correct = 0
             res = "WRONG!"
-            if self.mapping[num] == self.sound_type:
+            if self.mapping_for_button[num] == self.sound_type:
                 res = "CORRECT!"
                 is_correct = 1
 
@@ -114,6 +128,9 @@ class ExerciseHandler:
                     "INSERT INTO Scores(ex_id, is_correct, username, instrument, mode, ex_type, done_date) VALUES(?, ?, ?, ?, ?, ?, ?)",
                     (next_id + 1, is_correct, self.logged_user, self.instrument.name, self.mode.name, self.sound_type,
                      str(datetime.datetime.date(datetime.datetime.now()))))
+
+            if not is_correct:
+                res += " It was " + self.mapping_for_user[self.sound_type]
 
             self.master_root.correctness_label["text"] = res
             self.sound = None

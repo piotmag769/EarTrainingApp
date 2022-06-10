@@ -16,7 +16,7 @@ class ExerciseWindow(BaseWindow):
         self.correctness_label.place(x=100, y=600)
 
         j = 0
-        width = 15 if exercise != Exercise.TRIADS else 20
+        width = 15 if exercise != Exercise.TRIADS else 22
         for i in range(len(names)):
             if what_to_play[i].get():
                 buttons_list.append(tk.Button(
