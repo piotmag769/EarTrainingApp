@@ -1,3 +1,4 @@
+import collections
 import os
 import sqlite3
 import tkinter as tk
@@ -10,6 +11,30 @@ from .base_window import BaseWindow
 class ImprovementWindow(BaseWindow):
     def __init__(self, master_root):
         super().__init__(master_root, 400, 140, "Areas to improve")
+
+        database_names = [
+            ['2_m', '2_w', '3_m', '3_w', '4', '4_5_tryt', '5', '6_m', '6_w', '7_m', '7_w', '8'],
+            ['zas', '1_kw_sek', '2_ter_kw', '3_sek'],
+            ['dur_z', 'dur_6', 'dur_64', 'mol_z', 'mol_6', 'mol_64', 'zmn_z', 'zmn_6', 'zmn_64',
+             'zwiek']
+        ]
+
+        exercises_names = [
+            ['Sekunda mała 2>', 'Sekundka wielka 2', 'Tercja mała 3>', 'Tercja wielka 3',
+             'Kwarta czysta 4', 'Tryton 4</5>', 'Kwinta czysta 5', 'Seksta mała 6>',
+             ' Seksta wielka 6',
+             'Septyma mała 7', 'Septyma wielka 7<', 'Oktawa'],
+            ['Zasadnicza', 'I przewrót', 'II przewrót', 'III przewrót'],
+            ['Durowy zasadniczy', 'Durowy sekstowy', 'Durowy kwartsekstowy',
+             'Molowy zasadniczy',
+             'Molowy sekstowy', 'Molowy kwartsekstowy', 'Zmniejszony zasadniczy',
+             'Zmniejszony sekstowy',
+             'Zmniejszony kwartsekstowy', 'Zwiększony kwartsekstowy']
+        ]
+
+        self.mappings_for_user = [collections.defaultdict(lambda: "---", zip(db_names, ex_names)) for db_names, ex_names
+                                  in zip(database_names, exercises_names)]
+
         self.find_weak_points()
 
     def find_weak_points(self):
@@ -44,14 +69,17 @@ class ImprovementWindow(BaseWindow):
             table.heading(column, text=column, anchor=tk.CENTER)
 
         table.insert(parent='', index='end', iid=0, text='',
-                     values=("Intervals", worst_int[0],
-                             str(int(worst_int[1] * 100)) + "%" if worst_int[1] != float('inf') else "---"))
+                     values=(
+                         "Intervals", self.mappings_for_user[0][worst_int[0]],
+                         str(int(worst_int[1] * 100)) + "%" if worst_int[1] != float('inf') else "---"))
         table.insert(parent='', index='end', iid=1, text='',
-                     values=("Dominants", worst_dom[0],
-                             str(int(worst_dom[1] * 100)) + "%" if worst_dom[1] != float('inf') else "---"))
+                     values=(
+                         "Dominants", self.mappings_for_user[1][worst_dom[0]],
+                         str(int(worst_dom[1] * 100)) + "%" if worst_dom[1] != float('inf') else "---"))
         table.insert(parent='', index='end', iid=2, text='',
-                     values=("Triads", worst_triad[0],
-                             str(int(worst_triad[1] * 100)) + "%" if worst_triad[1] != float('inf') else "---"))
+                     values=(
+                         "Triads", self.mappings_for_user[2][worst_triad[0]],
+                         str(int(worst_triad[1] * 100)) + "%" if worst_triad[1] != float('inf') else "---"))
 
         info_label.pack()
 
